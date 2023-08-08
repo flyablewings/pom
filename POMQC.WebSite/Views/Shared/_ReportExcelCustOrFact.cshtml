@@ -1,0 +1,70 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.ViewModels.Filter;
+@{
+    Layout = null;    
+}
+@model ReportViewModelBase
+<table id="report-po@((int)Model.Function)" border="1">
+    <thead>
+        <tr class="b c">
+            <td colspan="5"><div style="font-weight: bold; padding: 3px" id="report-title@((int)Model.Function)">@Html.Raw(Model.Title)</div></td>
+        </tr>
+        <tr class="b c">
+            <td rowspan="4" style="width: 80px">DEFECT NO</td>
+            <td colspan="3">MATERIAL</td>
+            <td rowspan="4" style="width: 80px">QTY</td>
+        </tr>
+        <tr class="b c">
+            <td colspan="3">DEFECT DESCRIPTION</td>
+        </tr>
+        <tr class="b c">
+            <td colspan="3">DEFECT LOCATION</td>
+        </tr>
+        <tr class="b c">
+            <td colspan="3">DEFECT TYPE</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Items.Any())
+        {
+            <tr>
+                <td colspan="5">&nbsp;</td>
+            </tr>
+            var groups = Model.Items.GroupBy(m => m.DHUType);
+            foreach (var item in groups)
+            {
+                var index = 1;
+        <tr class="b sub-header-row-bg">
+            <td></td>
+            <td colspan="3">@item.First().DHUType.ToString().ToUpperInvariant()</td>
+            <td class="b c">@item.Sum(i => i.Total)</td>
+        </tr>        
+                foreach (var defect in item)
+                {
+        <tr>
+            <td class="c">@index</td>
+            <td>@defect.DefName</td>
+            <td>@defect.LocName</td>
+            <td>@defect.Type.ToString()</td>
+            <td class="c">@defect.Total</td>
+        </tr>        ++index;
+                }
+        <tr>
+            <td colspan="5">&nbsp;</td>
+        </tr>        
+            }
+        }
+        else
+        {
+        <tr>
+            <td colspan="5" class="c">There is no information</td>
+        </tr>        
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="b r" colspan="4">TOTAL</td>
+            <td class="b c" id="report-grand-total@((int)Model.Function)">@Model.Items.Sum(i => i.Total)</td>
+        </tr>
+    </tfoot>
+</table>

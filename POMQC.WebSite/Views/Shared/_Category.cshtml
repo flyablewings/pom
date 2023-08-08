@@ -1,0 +1,45 @@
+﻿@{
+    var index = 1;
+}
+@model IList<POMQC.Entities.Defect.DefectCategory>
+<div class="container tab-pane fade in active" id="Category">
+    <table>
+        <thead>
+            <tr>
+                <td colspan="5">DEFECT CATEGORY MANAGEMENT</td>
+                <td class="c"><a onclick="addDefectCategory(0);" class="btn btn-primary" role="button">Add</a></td>
+            </tr>
+            <tr>
+                <td>No.</td>
+                <td>Category Name</td>
+                <td>Created By</td>
+                <td>Updated By</td>
+                <td>Active</td>
+                <td>Edit</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var cat in Model)
+                {                
+            <tr>
+                <td class="c">@index</td>
+                <td>@cat.CatName</td>
+                <td>@cat.CreatedUser</td>
+                <td>@cat.UpdatedUser</td>
+                <td class="c"><input type="checkbox" @(cat.Active ? "checked" : string.Empty) disabled /></td>
+                <td class="c"><a onclick="addDefectCategory(@cat.CatId);" class="btn btn-primary" role="button">Edit</a></td>
+            </tr>        
+                    ++index;
+                }        
+            }
+            else
+            {
+            <tr>
+                <td class="c" colspan="6">There is no information</td>
+            </tr>        
+            }
+        </tbody>
+    </table>
+</div>

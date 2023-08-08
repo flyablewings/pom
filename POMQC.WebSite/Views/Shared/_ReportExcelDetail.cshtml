@@ -1,0 +1,85 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.ViewModels.Filter;
+@{
+    Layout = null;
+    var url = string.Format("/report/getalldetailexcel?from={0}&to={1}", DateTime.Now.AddMonths(-1).ToString("MM/dd/yyyy"), DateTime.Now.AddMonths(1).ToString("MM/dd/yyyy"));
+}
+@model ReportViewModelBaseFactory
+<table id="report-detail@((int)Model.Function)" border="1">
+        <thead>
+        <tr class="b c">
+            <td colspan="12" style="text-align: center"><div style="font-weight: bold; padding: 3px" id="report-title@((int)Model.Function)">@Html.Raw(Model.Title)</div></td>
+        </tr>
+        <tr class="b c" style="text-align: center; font-weight:bold">
+            <td>Factory</td>
+            <td>Customer</td>
+            <td>CUSTPO</td>
+            <td>AIGLPO</td>
+            <td>Order QTY</td>
+            <td>Inspection QTY</td>
+            <td>Defect</td>
+            <td>Location</td>
+            <td>Type</td>
+            <td>Total</td>
+            <td>Created Date</td
+            <td>Created By</td>            
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Items.Any())
+        {
+            var items = Model.Items.GroupBy(m => new { m.FactoryName, m.CustName, m.CustPO, m.AIGLPO, m.DHUType, m.CreatedDate, m.CreatedUser });
+            foreach (var defectDetails in items)
+            {
+                var index = 0;
+                var styles = defectDetails.Count();
+                var rowSpan = styles > 1 ? "rowspan=\"" + styles + "\"" : string.Empty;
+                var defect = defectDetails.First();
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">@defect.DHUType.ToString().ToUpperInvariant()</td>
+                </tr>
+                foreach (var defectDetail in defectDetails)
+                {                    
+                    if (index == 0)
+                    {
+                <tr>
+                    <td style="vertical-align:middle" @Html.Raw(rowSpan)>@defectDetail.FactoryName</td>
+                    <td style="vertical-align:middle" @Html.Raw(rowSpan)>@defectDetail.CustName</td>
+                    <td style="vertical-align:middle" @Html.Raw(rowSpan)>@defectDetail.CustPO</td>
+                    <td style="vertical-align:middle" @Html.Raw(rowSpan)>@defectDetail.AIGLPO</td>
+                    <td style="vertical-align:middle" @Html.Raw(rowSpan)>@defectDetails.Sum(i => i.OrderQty)</td>
+                    <td style="vertical-align:middle" @Html.Raw(rowSpan)>@defectDetails.Sum(i => i.InspectedQty)</td>
+                    <td>@defectDetail.DefName</td>
+                    <td>@defectDetail.LocName</td>
+                    <td class="c" style="text-align:center">@defectDetail.Type</td>
+                    <td class="r" style="text-align:right">@defectDetail.Total</td>
+                    <td style="vertical-align:middle" @Html.Raw(rowSpan)>@defectDetail.CreatedDate.ToShortDateString()</td>
+                    <td style="vertical-align: middle; text-align: center" @Html.Raw(rowSpan)>@defectDetail.CreatedUser</td>
+                </tr>
+                    }
+                    else
+                    {
+                <tr>
+                    <td>@defectDetail.DefName</td>
+                    <td>@defectDetail.LocName</td>
+                    <td class="c" style="text-align:center">@defectDetail.Type</td>
+                    <td class="r" style="text-align:right">@defectDetail.Total</td>
+                </tr>
+                    }
+                ++index;                
+                }
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">@defectDetails.Sum(i => i.Total)</td>
+                    <td colspan="2"></td>
+                </tr>
+            }
+        }
+        else
+        {
+        <tr>
+            <td colspan="12" class="c" style="text-align:center">There is no information</td>
+        </tr>        
+        }
+    </tbody>
+</table>

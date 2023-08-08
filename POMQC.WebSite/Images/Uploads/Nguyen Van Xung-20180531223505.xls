@@ -1,0 +1,712 @@
+
+<table id="report-detail0" border="1">
+        <thead>
+        <tr class="b c">
+            <td colspan="12" style="text-align: center"><div style="font-weight: bold; padding: 3px" id="report-title0">DETAIL REPORT<br />From: 01/01/2018, To: 06/28/2018</div></td>
+        </tr>
+        <tr class="b c" style="text-align: center; font-weight:bold">
+            <td>Factory</td>
+            <td>Customer</td>
+            <td>CUSTPO</td>
+            <td>AIGLPO</td>
+            <td>Order QTY</td>
+            <td>Inspection QTY</td>
+            <td>Defect</td>
+            <td>Location</td>
+            <td>Type</td>
+            <td>Total</td>
+            <td>Created Date</td
+            <td>Created By</td>            
+        </tr>
+    </thead>
+    <tbody>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">INLINE</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="3">HOA THO</td>
+                    <td style="vertical-align:middle" rowspan="3">LNC</td>
+                    <td style="vertical-align:middle" rowspan="3">CEC714</td>
+                    <td style="vertical-align:middle" rowspan="3">AIGL12446</td>
+                    <td style="vertical-align:middle" rowspan="3">15264</td>
+                    <td style="vertical-align:middle" rowspan="3">30</td>
+                    <td>Fabric snag</td>
+                    <td>Front Waist band</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">3</td>
+                    <td style="vertical-align:middle" rowspan="3">3/23/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="3">JuliaT</td>
+                </tr>
+                <tr>
+                    <td>Hole</td>
+                    <td>Front Rise</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">3</td>
+                </tr>
+                <tr>
+                    <td>Incorrect size of button / Zipper/ Hook &amp; Eye</td>
+                    <td>Bartack at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">3</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">9</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">FINISHING</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" >HOA THO</td>
+                    <td style="vertical-align:middle" >LNC</td>
+                    <td style="vertical-align:middle" >CEC714</td>
+                    <td style="vertical-align:middle" >AIGL12446</td>
+                    <td style="vertical-align:middle" >15264</td>
+                    <td style="vertical-align:middle" >30</td>
+                    <td>Wrinkles/ Crease/ Marks</td>
+                    <td>Front Rise</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">3</td>
+                    <td style="vertical-align:middle" >3/23/2018</td>
+                    <td style="vertical-align: middle; text-align: center" >JuliaT</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">3</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">FINAL</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" >HOA THO</td>
+                    <td style="vertical-align:middle" >LNC</td>
+                    <td style="vertical-align:middle" >CEC714</td>
+                    <td style="vertical-align:middle" >AIGL12446</td>
+                    <td style="vertical-align:middle" >15264</td>
+                    <td style="vertical-align:middle" >0</td>
+                    <td>Broken pick</td>
+                    <td>Front Fly</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">3</td>
+                    <td style="vertical-align:middle" >3/24/2018</td>
+                    <td style="vertical-align: middle; text-align: center" >JuliaT</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">3</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">FINAL</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" >HUEGATEX</td>
+                    <td style="vertical-align:middle" >APE</td>
+                    <td style="vertical-align:middle" >SU20434</td>
+                    <td style="vertical-align:middle" >AIGL3946</td>
+                    <td style="vertical-align:middle" >1536</td>
+                    <td style="vertical-align:middle" >0</td>
+                    <td>Fabric snag</td>
+                    <td>Front Fly</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">4</td>
+                    <td style="vertical-align:middle" >5/6/2018</td>
+                    <td style="vertical-align: middle; text-align: center" >JuliaT</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">4</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">CUTTING</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="2">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="2">LNC</td>
+                    <td style="vertical-align:middle" rowspan="2">LR5704</td>
+                    <td style="vertical-align:middle" rowspan="2">AIGL13510</td>
+                    <td style="vertical-align:middle" rowspan="2">686</td>
+                    <td style="vertical-align:middle" rowspan="2">10</td>
+                    <td>Fabric snag</td>
+                    <td>Bartack at front pocket</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="2">1/10/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="2">ADMIN</td>
+                </tr>
+                <tr>
+                    <td>Fabric snag</td>
+                    <td>Front Waist band</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">2</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">CUTTING</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="15">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="15">LNC</td>
+                    <td style="vertical-align:middle" rowspan="15">NG124 (TBA)</td>
+                    <td style="vertical-align:middle" rowspan="15">AIGL13552</td>
+                    <td style="vertical-align:middle" rowspan="15">600</td>
+                    <td style="vertical-align:middle" rowspan="15">33</td>
+                    <td>Fabric snag</td>
+                    <td>Front Fly</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="15">2/27/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="15">ADMIN</td>
+                </tr>
+                <tr>
+                    <td>Incorrect thread color</td>
+                    <td>Front botton hem</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect thread color</td>
+                    <td>Rivet at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ Content/ Size/ Care/ POT UPC)</td>
+                    <td>Bartack at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ Content/ Size/ Care/ POT UPC)</td>
+                    <td>Rivet at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ heatseal)</td>
+                    <td>Back Waist band</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Wrinkles/ Crease/ Marks</td>
+                    <td>Front botton hem</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect folding dimention</td>
+                    <td>Back rise</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ heatseal)</td>
+                    <td>Back garment</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Fabric snag</td>
+                    <td>Front Waist band</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">3</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ Content/ Size/ Care/ POT UPC)</td>
+                    <td>Bartack at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Fabric snag</td>
+                    <td>Front Rise</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Hole</td>
+                    <td>Bartack at front  Fly</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect folding dimention</td>
+                    <td>Back rise</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Missing Label</td>
+                    <td>Botton at front waist band</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">17</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">CUTTING</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="3">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="3">LNC</td>
+                    <td style="vertical-align:middle" rowspan="3">LR5718</td>
+                    <td style="vertical-align:middle" rowspan="3">AIGL13524</td>
+                    <td style="vertical-align:middle" rowspan="3">280</td>
+                    <td style="vertical-align:middle" rowspan="3">10</td>
+                    <td>Streaks</td>
+                    <td>Front garment</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="3">2/27/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="3">ADMIN</td>
+                </tr>
+                <tr>
+                    <td>Broken pick</td>
+                    <td>Front Watch pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect thread color</td>
+                    <td>Rivet at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">3</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">CUTTING</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" >MARCH 29</td>
+                    <td style="vertical-align:middle" >LNC</td>
+                    <td style="vertical-align:middle" >LR5713</td>
+                    <td style="vertical-align:middle" >AIGL13518</td>
+                    <td style="vertical-align:middle" >858</td>
+                    <td style="vertical-align:middle" >10</td>
+                    <td>Label( Main/ Content/ Size/ Care/ POT UPC)</td>
+                    <td>Bartack at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" >3/26/2018</td>
+                    <td style="vertical-align: middle; text-align: center" >JuliaT</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">1</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">INLINE</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" >MARCH 29</td>
+                    <td style="vertical-align:middle" >LNC</td>
+                    <td style="vertical-align:middle" >LR5704</td>
+                    <td style="vertical-align:middle" >AIGL13510</td>
+                    <td style="vertical-align:middle" >686</td>
+                    <td style="vertical-align:middle" >10</td>
+                    <td>Fabric snag</td>
+                    <td>Piping at front Fly</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" >1/12/2018</td>
+                    <td style="vertical-align: middle; text-align: center" >ADMIN</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">1</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">INLINE</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" >MARCH 29</td>
+                    <td style="vertical-align:middle" >LNC</td>
+                    <td style="vertical-align:middle" >LR5718</td>
+                    <td style="vertical-align:middle" >AIGL13524</td>
+                    <td style="vertical-align:middle" >280</td>
+                    <td style="vertical-align:middle" >10</td>
+                    <td>Fabric snag</td>
+                    <td>Front Rise</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" >3/24/2018</td>
+                    <td style="vertical-align: middle; text-align: center" >JuliaT</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">1</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">ENDLINE</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="7">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="7">LNC</td>
+                    <td style="vertical-align:middle" rowspan="7">LR5718</td>
+                    <td style="vertical-align:middle" rowspan="7">AIGL13524</td>
+                    <td style="vertical-align:middle" rowspan="7">280</td>
+                    <td style="vertical-align:middle" rowspan="7">10</td>
+                    <td>Botton hole</td>
+                    <td>Bartack at back pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="7">3/23/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="7">JuliaT</td>
+                </tr>
+                <tr>
+                    <td>Embroidery</td>
+                    <td>Lining at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Hole</td>
+                    <td>Front beltloop</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect fusible style</td>
+                    <td>Back Waist band</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect placement</td>
+                    <td>Back garment</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ heatseal)</td>
+                    <td>Front beltloop</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Wrinkles/ Crease/ Marks</td>
+                    <td>Front beltloop</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">7</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">FINISHING</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="2">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="2">LNC</td>
+                    <td style="vertical-align:middle" rowspan="2">LR5718</td>
+                    <td style="vertical-align:middle" rowspan="2">AIGL13524</td>
+                    <td style="vertical-align:middle" rowspan="2">280</td>
+                    <td style="vertical-align:middle" rowspan="2">10</td>
+                    <td>Label( Main/ heatseal)</td>
+                    <td>Botton at front waist band</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="2">3/23/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="2">JuliaT</td>
+                </tr>
+                <tr>
+                    <td>Missing Label</td>
+                    <td>Rivet at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">2</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">FINISHING</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="4">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="4">LNC</td>
+                    <td style="vertical-align:middle" rowspan="4">LR5713</td>
+                    <td style="vertical-align:middle" rowspan="4">AIGL13518</td>
+                    <td style="vertical-align:middle" rowspan="4">858</td>
+                    <td style="vertical-align:middle" rowspan="4">10</td>
+                    <td>Fabric snag</td>
+                    <td>Front Waist band</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="4">4/22/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="4">JuliaT</td>
+                </tr>
+                <tr>
+                    <td>Broken pick</td>
+                    <td>Front Watch pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Fabric snag</td>
+                    <td>Front Fly</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect fusible style</td>
+                    <td>Piping at front Fly</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">4</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">FINISHING</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="5">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="5">LNC</td>
+                    <td style="vertical-align:middle" rowspan="5">NG124 (TBA)</td>
+                    <td style="vertical-align:middle" rowspan="5">AIGL13552</td>
+                    <td style="vertical-align:middle" rowspan="5">600</td>
+                    <td style="vertical-align:middle" rowspan="5">10</td>
+                    <td>Broken pick</td>
+                    <td>Front Watch pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="5">5/15/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="5">JuliaT</td>
+                </tr>
+                <tr>
+                    <td>Fabric snag</td>
+                    <td>Front Fly</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Fabric snag</td>
+                    <td>Front pocket</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Hi- Low</td>
+                    <td>Front beltloop</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Hole</td>
+                    <td>Front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">5</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">PREFINAL</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" >MARCH 29</td>
+                    <td style="vertical-align:middle" >LNC</td>
+                    <td style="vertical-align:middle" >LR5704</td>
+                    <td style="vertical-align:middle" >AIGL13510</td>
+                    <td style="vertical-align:middle" >686</td>
+                    <td style="vertical-align:middle" >0</td>
+                    <td>Label( Main/ Content/ Size/ Care/ POT UPC)</td>
+                    <td>Back Waist band</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" >1/12/2018</td>
+                    <td style="vertical-align: middle; text-align: center" >ADMIN</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">1</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">PREFINAL</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="2">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="2">LNC</td>
+                    <td style="vertical-align:middle" rowspan="2">LR5718</td>
+                    <td style="vertical-align:middle" rowspan="2">AIGL13524</td>
+                    <td style="vertical-align:middle" rowspan="2">280</td>
+                    <td style="vertical-align:middle" rowspan="2">0</td>
+                    <td>Hole</td>
+                    <td>Bartack at front  Fly</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="2">3/23/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="2">ADMIN</td>
+                </tr>
+                <tr>
+                    <td>Incorrect size of button / Zipper/ Hook &amp; Eye</td>
+                    <td>Rivet at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">2</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">PREFINAL</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="2">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="2">LNC</td>
+                    <td style="vertical-align:middle" rowspan="2">LR5711</td>
+                    <td style="vertical-align:middle" rowspan="2">AIGL13517</td>
+                    <td style="vertical-align:middle" rowspan="2">858</td>
+                    <td style="vertical-align:middle" rowspan="2">100</td>
+                    <td>Fabric snag</td>
+                    <td>Front Waist band</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="2">5/14/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="2">JuliaT</td>
+                </tr>
+                <tr>
+                    <td>Hole</td>
+                    <td>Front Watch pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">2</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">FINAL</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="10">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="10">LNC</td>
+                    <td style="vertical-align:middle" rowspan="10">NG124 (TBA)</td>
+                    <td style="vertical-align:middle" rowspan="10">AIGL13552</td>
+                    <td style="vertical-align:middle" rowspan="10">600</td>
+                    <td style="vertical-align:middle" rowspan="10">0</td>
+                    <td>Hole</td>
+                    <td>Front Rise</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="10">3/3/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="10">ADMIN</td>
+                </tr>
+                <tr>
+                    <td>Broken pick</td>
+                    <td>Front Rise</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Fabric snag</td>
+                    <td>Front pocket</td>
+                    <td class="c" style="text-align:center">Minor</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect thread color</td>
+                    <td>Front garment</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ Content/ Size/ Care/ POT UPC)</td>
+                    <td>Bartack at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">2</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ Content/ Size/ Care/ POT UPC)</td>
+                    <td>Rivet at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Missing Label</td>
+                    <td>Botton at front waist band</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Missing Label</td>
+                    <td>Front Waist band</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Streaks</td>
+                    <td>Front Waist band</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+                <tr>
+                    <td>Incorrect folding dimention</td>
+                    <td>Back rise</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">11</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="11" class="b sup-header-row-bg" style="font-weight:bold">FINAL</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:middle" rowspan="2">MARCH 29</td>
+                    <td style="vertical-align:middle" rowspan="2">LNC</td>
+                    <td style="vertical-align:middle" rowspan="2">LR5718</td>
+                    <td style="vertical-align:middle" rowspan="2">AIGL13524</td>
+                    <td style="vertical-align:middle" rowspan="2">280</td>
+                    <td style="vertical-align:middle" rowspan="2">0</td>
+                    <td>Hole</td>
+                    <td>Front Fly</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                    <td style="vertical-align:middle" rowspan="2">3/23/2018</td>
+                    <td style="vertical-align: middle; text-align: center" rowspan="2">ADMIN</td>
+                </tr>
+                <tr>
+                    <td>Label( Main/ Content/ Size/ Care/ POT UPC)</td>
+                    <td>Bartack at front pocket</td>
+                    <td class="c" style="text-align:center">Major</td>
+                    <td class="r" style="text-align:right">1</td>
+                </tr>
+            <tr>
+                    <td colspan="9" class="b r" style="font-weight:bold; text-align:right">TOTAL</td>
+                    <td class="b r" style="font-weight:bold; text-align:right">2</td>
+                    <td colspan="2"></td>
+                </tr>
+    </tbody>
+</table>

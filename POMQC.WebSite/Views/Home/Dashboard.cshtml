@@ -1,0 +1,93 @@
+﻿@using POMQC.ViewModels.Filter;
+
+@{
+    ViewBag.Title = "Dashboard";
+    var count = 0;
+}
+@model POMQC.ViewModels.Dashboard.DashboardViewModel
+@section styles{
+<style type="text/css">.swiper-container{width:100%;padding-bottom:50px;border: 1px solid #eee; border-top: none;}.swiper-slide{background-position:center;background-size:cover;width:280px;height:280px;margin-top:10px}</style>   
+}
+@Html.Partial("Filter", Model.Filter)
+<div class="dashboard-tbl">
+    <table id="main">
+        <thead>
+            <tr>
+                <td>AIGL PO</td>
+                <td>Cust PO</td>
+                <td>Cust Name</td>
+                <td>Factory</td>
+                <td>Related Divison</td>
+                <td>Inline Date</td>
+                <td>Status</td>
+                <td>PO Qty</td>
+                <td>Total Defects</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.POs.Any())
+            {
+                foreach (var item in Model.POs)
+                {
+            <tr class="@(count == 0 ? "selected-row" : string.Empty)" onclick="dashboardDetail(this, @item.CustId, '@item.CustPO', '@item.AIGLPO', '@item.Customer')">
+                <td>@item.AIGLPO</td>
+                <td>@item.CustPO</td>
+                <td>@item.Customer</td>
+                <td>@item.Factory</td>
+                <td>@item.Division</td>
+                <td>@item.InlineDate</td>
+                <td>@item.Status</td>
+                <td class="r">@item.POQty</td>
+                <td class="r">@item.Defect</td>
+            </tr>
+                    ++count;
+                }
+            }
+            else
+            {
+            <tr>
+                <td colspan="9" class="c">There is no information</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="dashboard-sum">
+    <div id="sum-section">
+        <ul class="nav nav-tabs" role="tablist" id="dashboard-tab">
+          <li role="presentation" class="active"><a role="tab" data-toggle="tab" aria-expanded="true" href="#FitSample">FIT SAMPLE</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#PPSample">PP SAMPLE</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#TopSample">TOP SAMPLE</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#QAChecklist">QA/QC CHECKLIST</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#PPMeeting">PP MEETING</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Fabric">FABRIC</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Cutting">CUTTING</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Inline">INLINE</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Endline">ENDLINE</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Finishing">FINISHING</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Packing">PACKING</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Prefinal">PREFINAL</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Final">FINAL</a></li>
+          <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#ReportByPO">SUMMARY</a></li>
+        </ul>
+        <div class="tab-content category">
+            @Html.Partial("_Checklist", Model.FitSample)
+            @Html.Partial("_Checklist", Model.PPSample)
+            @Html.Partial("_Checklist", Model.TopSample)
+            @Html.Partial("_Checklist", Model.QAChecklist)
+            @Html.Partial("_Checklist", Model.PPMeeting)
+            @Html.Partial("_Checklist", Model.Fabric)
+            @Html.Partial("DHU", Model.Cutting)
+            @Html.Partial("DHU", Model.Inline)
+            @Html.Partial("DHU", Model.Endline)
+            @Html.Partial("DHU", Model.Finishing)
+            @Html.Partial("DHU", Model.Packing)
+            @Html.Partial("Final", Model.Prefinal)
+            @Html.Partial("Final", Model.Final)
+            @Html.Partial("ReportBase", Model.Summary)
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var styles = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Styles));
+</script>

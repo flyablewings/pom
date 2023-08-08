@@ -1,0 +1,241 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.Entities.Base;
+@using Newtonsoft.Json;
+ 
+@{
+    Layout = null;
+}
+@{
+    var imgs = Model.Item.Images;
+    var groupCodes = Model.DefectCodes.Where(c => c.Active).GroupBy(c => c.CatName);
+    var defectLocations = Model.DefectLocations.Where(c => c.Active);
+    var index = 0;
+    var passComment = Model.Item.FinalStatus == StatusType.Pass ?
+        Model.Item.FinalComment : string.Empty;
+    var rejectComment = Model.Item.FinalStatus == StatusType.Failed ?
+        Model.Item.FinalComment : string.Empty;
+    var onholdComment = Model.Item.FinalStatus == StatusType.OnHold ?
+        Model.Item.FinalComment : string.Empty;
+}
+@model FinalViewModel
+<table id="reportDHU" border="1">
+    <tr>
+        <td colspan="7" style="font-weight: bold; text-align: center;"><div style="line-height: 25px">@(Model.Function.ToString().ToUpperInvariant()) INSPECTION - PRODUCT QUALITY</div><div style="line-height: 20px"> </div></td>
+    </tr>
+    <tr>
+        <td>Workmanship AQL</td>
+        <td colspan="6">@(Model.Item.WorkmanshipAQL == AQL.AQL10 ? "1.0" : Model.Item.WorkmanshipAQL == AQL.AQL15 ? "1.5" : Model.Item.WorkmanshipAQL == AQL.AQL25 ? "2.5" : "None")</td>
+    </tr>
+    <tr>                    
+        <td class="b r">Measurement AQL</td>
+        <td colspan="6">@(Model.Item.MeasurementAQL == AQL.AQL40 ? "4.0" : Model.Item.MeasurementAQL == AQL.AQL65 ? "6.5" : Model.Item.MeasurementAQL == AQL.AQL252 ? "2.5" : "None")</td>
+    </tr>
+    <tr>                    
+        <td class="b r">DATE</td>
+        <td id="date@((int)Model.Function)">@(Model.Item.FinalId == 0 ? DateTime.Now.ToString("MM/dd/yyyy") : Model.Item.CreateDate)</td>
+        <td>PASS: @(Model.Item.FinalStatus == StatusType.Pass ? "Yes" : "No")</td>
+        <td colspan="4">@passComment</td>
+    </tr>
+    <tr>
+        <td class="b r">Audited by</td>
+        <td>@Model.Item.AuditedBy</td>
+        <td>REJECT: @(Model.Item.FinalStatus == StatusType.Failed ? "Yes" : "No")</td>
+        <td colspan="4">@rejectComment</td>
+    </tr>
+    <tr>
+        <td class="b r">Customer Name</td>
+        <td id="custName2@((int)Model.Function)">@Model.Item.CustName</td>
+        <td>ON HOLD: @(Model.Item.FinalStatus == StatusType.OnHold ? "Yes" : "No")</td>
+        <td colspan="4">@onholdComment</td>
+    </tr>
+    <tr>
+        <td class="b r">Factory Name</td>
+        <td id="factName2@((int)Model.Function)">@Model.Item.FactoryName</td>
+        <td class="b">Main Label</td>
+        <td colspan="4">@Model.Item.MainLabel</td>
+    </tr>
+    <tr>
+        <td class="b r">Factory Manager</td>
+        <td>@Model.Item.FactoryManager</td>
+        <td class="b">Qty Inspected</td>
+        <td style="text-align: right" colspan="4">@Model.POs.Sum(p => p.InspectedQty).ToString("#,###")</td>
+    </tr>
+    <tr>
+        <td class="b r">Actual Inspection Date</td>
+        <td>@Model.Item.ActualInspectionDate</td>
+        <td class="b">Actual Product Qty</td>
+        <td colspan="4"  style="text-align: right">@Model.POs.Sum(p => p.ActualProductQty).ToString("#,###")</td>
+    </tr>
+    <tr><td colspan="7"></td></tr>
+    <tr class="b c">
+        <td style="text-align: center">AIGL PO</td>
+        <td style="text-align: center">Customer PO</td>
+        <td style="text-align: center">Style</td>
+        <td style="text-align: center">Color or Code</td>
+        <td style="text-align: center">Order Qty/color</td>
+        <td style="text-align: center">Inspected Qty</td>
+        <td style="text-align: center">Actual Product Qty</td>
+    </tr>
+    @if (!Model.POs.Any())
+    {
+    <tr>
+        <td colspan="7" style="text-align: center">There is no information</td>
+    </tr>    
+    }
+    else
+    {
+        foreach (var po in Model.POs)
+        {
+    <tr>
+        <td>@po.AIGLPO</td>
+        <td>@po.CustPO</td>
+        <td>@po.Style</td>
+        <td>@po.Color</td>
+        <td style="text-align: right" class="r">@po.OrderQuantity.ToString("#,###")</td>
+        <td style="text-align: right" class="r">@po.InspectedQty.ToString("#,###")</td>
+        <td style="text-align: right" class="r">@po.ActualProductQty.ToString("#,###")</td>
+    </tr>    
+        }
+    }
+    <tr class="b r">
+        <td style="text-align: right" colspan="4">TOTAL</td>
+        <td style="text-align: right" id="sum-po-list@((int)Model.Function)">@(Model.POs.Any() ? Model.POs.Sum(p => p.OrderQuantity).ToString("#,###") : "0")</td>
+        <td style="text-align: right" id="sum-ins-list@((int)Model.Function)">@(Model.POs.Any() ? Model.POs.Sum(p => p.InspectedQty).ToString("#,###") : "0")</td>
+        <td style="text-align: right" id="sum-act-list@((int)Model.Function)">@(Model.POs.Any() ? Model.POs.Sum(p => p.ActualProductQty).ToString("#,###") : "0")</td>
+    </tr>
+    <tr><td colspan="7"></td></tr>
+    <tr>
+        <td colspan="3">Cartons open during inspection (circle carton# open for workmanship audit)</td>
+        <td colspan="4">@Model.Item.CartonComment</td>
+    </tr>
+    <tr><td colspan="7"></td></tr>
+    <tr class="c">
+        <td style="text-align: center" colspan="7" class="b">
+            INSPECTION SUMMARY</td>
+    </tr>
+    <tr class="c">
+        <td style="text-align: center" class="b">
+            INSPECTION PROPERTY</td>
+        <td style="text-align: center" class="b">
+            PASSED</td>
+        <td style="text-align: center" class="b">
+            FAILED</td>
+        <td style="text-align: center" colspan="4" class="b">
+            COMMENTS</td>
+    </tr>
+    <tr class="c">
+        <td class="b">
+            Visual / Workmanship</td>
+        <td style="text-align: center">
+            @(Model.Item.WorkmanshipStatus == StatusType.Pass ? "Yes" : "No")</td>
+        <td style="text-align: center">
+            @(Model.Item.WorkmanshipStatus == StatusType.Failed ? "Yes" : "No")</td>
+        <td colspan="4">
+            @Model.Item.WorkmanshipComment</td>
+    </tr>
+    <tr class="c">
+        <td class="b">
+            Spec measurement</td>
+        <td style="text-align: center">
+            @(Model.Item.MeasurementStatus == StatusType.Pass ? "Yes" : "No")</td>
+        <td style="text-align: center">
+            @(Model.Item.MeasurementStatus == StatusType.Failed ? "Yes" : "No")</td>
+        <td colspan="4">
+            @Model.Item.MeasurementComment</td>
+    </tr>
+    <tr class="c">
+        <td class="b">
+            Packaging &amp; Packing Integrity</td>
+        <td style="text-align: center">
+            @(Model.Item.PackingStatus == StatusType.Pass ? "Yes" : "No")</td>
+        <td style="text-align: center">
+            @(Model.Item.PackingStatus == StatusType.Failed ? "Yes" : "No")</td>
+        <td colspan="4">
+            @Model.Item.PackingComment</td>
+    </tr>
+    <tr><td colspan="7"></td></tr>
+    <tr>
+        <td>COMMENTS</td>
+        <td colspan="6">@Model.Item.Comment</td>
+    </tr>
+    <tr><td colspan="7"></td></tr>
+    <tr class="b c">
+        <td colspan="4" style="width: 30%; text-align: center">DEFECT DESCRIPTION</td>
+        <td style="width: 30%; text-align: center">DEFECT LOCATION</td>
+        <td style="width: 20%; text-align: center">MAJOR</td>
+        <td style="text-align: center">MINOR</td>
+    </tr>
+    @if (Model.Defects.Any())
+    {
+        foreach (var defect in Model.Defects)
+        {
+    <tr>
+        <td colspan="4">
+            @foreach (var group in groupCodes)
+            {
+                foreach (var item in group)
+                {
+                    if (defect.DefId == item.DefId)
+                    {                            
+            <div>@(string.IsNullOrWhiteSpace(item.DefCode) ? "- " + item.DefName : item.DefCode + " - " + item.DefName)</div>
+                        break;
+                    }
+                }
+            }
+        </td>
+        <td>
+            @foreach (var item in defectLocations)
+            {
+                if (defect.LocId == item.LocId)
+                {
+            <div>@item.LocName</div>   
+                    break;
+                }
+            }
+        </td>
+        <td style="text-align: right">@(defect.Type == DefectType.Major ? defect.Total.ToString() : string.Empty)</td>
+        <td style="text-align: right">@(defect.Type == DefectType.Minor ? defect.Total.ToString() : string.Empty)</td>
+    </tr>
+            ++index;
+        }
+    }
+    else
+    {
+    <tr>
+        <td colspan="4">
+            None
+        </td>
+        <td>
+            None
+        </td>
+        <td style="text-align: right">0</td>
+        <td style="text-align: right">0</td>
+    </tr>
+    }
+    <tr class="b r">
+        <td style="text-align: right" colspan="5">TOTAL</td>
+        <td style="text-align: right">@(Model.Defects.Any() ? Model.Defects.Where(d => d.Type == DefectType.Major).Sum(d => d.Total) : 0)</td>
+        <td style="text-align: right">@(Model.Defects.Any() ? Model.Defects.Where(d => d.Type == DefectType.Minor).Sum(d => d.Total) : 0)</td>
+    </tr>
+    <tr><td colspan="7"></td></tr>
+    <tr>
+        <td>QA's COMMENTS</td>
+        <td colspan="6">@Model.Item.QAComment</td>
+    </tr>
+    <tr>
+        <td>FACTORY CAPTION</td>
+        <td colspan="6">@Model.Item.FactoryCaption</td>
+    </tr>
+    <tr>
+        <td>QA AUDITOR</td>
+        <td colspan="6">@Model.Item.QAAuditor</td>        
+    </tr>
+    <tr>
+        <td>FACTORY REP</td>
+        <td colspan="6">@Model.Item.FactoryRep</td>
+    </tr>
+    <tr>
+        <td>AIGL QA MANAGER</td>
+        <td colspan="6">@Model.Item.QAManager</td>
+    </tr>
+</table>

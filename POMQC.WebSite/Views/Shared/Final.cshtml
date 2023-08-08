@@ -1,0 +1,954 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.Entities.Base;
+@using Newtonsoft.Json;
+ 
+@{
+    Layout = null;
+}
+@{
+    var imgs = Model.Item.Images;
+    var groupCodes = Model.DefectCodes.Where(c => c.Active).GroupBy(c => c.CatName);
+    var defectLocations = Model.DefectLocations.Where(c => c.Active);
+    var count = 0;
+    var index = 0;
+    var passComment = Model.Item.FinalStatus == StatusType.Pass ?
+        Model.Item.FinalComment : string.Empty;
+    var rejectComment = Model.Item.FinalStatus == StatusType.Failed ?
+        Model.Item.FinalComment : string.Empty;
+    var onholdComment = Model.Item.FinalStatus == StatusType.OnHold ?
+        Model.Item.FinalComment : string.Empty;
+}
+@model FinalViewModel
+<div class="container tab-pane fade" id="@Model.Function">    
+    <div class="content-main">
+        <input type="hidden" id="finalid@((int)Model.Function)" value="@Model.Item.FinalId" />
+        <div id="errmsg2@((int)Model.Function)" style="display: none"></div>
+        <div class="dashboard-tbl">
+        <table id="final@((int)Model.Function)">
+            <thead>
+                <tr>
+                    <td>No.</td>
+                    <td>Created Date</td>
+                    <td>Created By</td>
+                    <td>Updated Date</td>
+                    <td>Updated By</td>
+                </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+                @if (Model.Items.Count == 0)
+                {
+                <tr>
+                    <td colspan="5" class="c">There is no information</td>
+                </tr>    
+                }
+                @foreach (var item in Model.Items)
+                {
+                    ++count;
+                <tr onclick="viewFinal(this, @item.CustId, '@item.CustPO', '@item.AIGLPO', '@item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff")', @((int)item.Type), @((int)Model.Function))" class="@(count == 1 ? "selected-row" : string.Empty)">
+                    <td>@count</td>
+                    <td>@item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff")</td>
+                    <td>@item.CreatedUser</td>
+                    <td>@item.UpdatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff")</td>
+                    <td>@item.UpdatedUser</td>
+                </tr>                    
+                }
+            </tbody>
+        </table>
+        </div>
+        <br />
+        <div style="font-weight: bold; padding: 3px" class="c form-header-title">@(Model.Function.ToString().ToUpperInvariant()) INSPECTION - PRODUCT QUALITY</div>
+        <table>
+            <tr>                    
+                <td style="width: 20%" class="b r">Workmanship AQL</td>
+                <td style="width: 20%"><input onchange="changeAQL(this, 1, 2, 3, @((int)Model.Function))" type="radio" @(Model.Item.WorkmanshipAQL == AQL.AQL10 ? "checked" : "") name="aql@((int)Model.Function)" id="aql10-@((int)Model.Function)" />1.0</td>
+                <td style="width: 15%"><input onchange="changeAQL(this, 2, 1, 3, @((int)Model.Function))" type="radio" @(Model.Item.WorkmanshipAQL == AQL.AQL15 ? "checked" : "") name="aql@((int)Model.Function)" id="aql15-@((int)Model.Function)" />1.5</td>
+                <td><input onchange="changeAQL(this, 3, 2, 1, @((int)Model.Function))" type="radio" @(Model.Item.WorkmanshipAQL == AQL.AQL25 ? "checked" : "") name="aql@((int)Model.Function)" id="aql25-@((int)Model.Function)" />2.5</td>
+            </tr>
+            <tr>
+                <td class="b r">Measurement AQL</td>
+                <td><input onchange="changeAQL2(this, 3, 1, 2, @((int)Model.Function))" type="radio" @(Model.Item.MeasurementAQL == AQL.AQL252 ? "checked" : "") name="aql2@((int)Model.Function)" id="aql252-@((int)Model.Function)" />2.5</td>
+                <td><input onchange="changeAQL2(this, 1, 2, 3, @((int)Model.Function))" type="radio" @(Model.Item.MeasurementAQL == AQL.AQL40 ? "checked" : "") name="aql2@((int)Model.Function)" id="aql40-@((int)Model.Function)" />4.0</td>
+                <td><input onchange="changeAQL2(this, 2, 3, 1, @((int)Model.Function))" type="radio" @(Model.Item.MeasurementAQL == AQL.AQL65 ? "checked" : "") name="aql2@((int)Model.Function)" id="aql65-@((int)Model.Function)" />6.5</td>
+            </tr>
+            <tr>                    
+                <td class="b r">DATE</td>
+                <td id="date@((int)Model.Function)">@(Model.Item.FinalId == 0 ? DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff") : Model.Item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.tt.fff"))</td>
+                <td><input onchange="changeFinalStatus(this, 'pass-comment@((int)Model.Function)', 'on-hold-comment@((int)Model.Function)', 'reject-comment@((int)Model.Function)')" type="radio" @(Model.Item.FinalStatus == StatusType.Pass ? "checked" : "") name="final@((int)Model.Function)" id="pass@((int)Model.Function)" />PASS</td>
+                <td><input @(Model.Item.FinalStatus != StatusType.Pass ? "disabled" : "") type="text" style="width: 95%" name="comment@((int)Model.Function)" class="pass" value="@passComment" id="pass-comment@((int)Model.Function)" /></td>
+            </tr>
+            <tr>
+                <td class="b r">Audited by</td>
+                <td><input type="text" style="width: 95%" id="audited-by@((int)Model.Function)" value="@Model.Item.AuditedBy" /></td>
+                <td><input onchange="changeFinalStatus(this, 'reject-comment@((int)Model.Function)', 'on-hold-comment@((int)Model.Function)', 'pass-comment@((int)Model.Function)')" type="radio" @(Model.Item.FinalStatus == StatusType.Failed ? "checked" : "") name="final@((int)Model.Function)" id="reject@((int)Model.Function)" />REJECT</td>
+                <td><input @(Model.Item.FinalStatus != StatusType.Failed ? "disabled" : "") type="text" style="width: 95%" name="comment@((int)Model.Function)" class="reject" value="@rejectComment" id="reject-comment@((int)Model.Function)" /></td>
+            </tr>
+            <tr>
+                <td class="b r">Customer Name</td>
+                <td id="custName2@((int)Model.Function)">@Model.Item.CustName</td>
+                <td><input onchange="changeFinalStatus(this, 'on-hold-comment@((int)Model.Function)', 'pass-comment@((int)Model.Function)', 'reject-comment@((int)Model.Function)')" type="radio" @(Model.Item.FinalStatus == StatusType.OnHold ? "checked" : "") name="final@((int)Model.Function)" id="on-hold@((int)Model.Function)" />ON HOLD</td>
+                <td><input @(Model.Item.FinalStatus != StatusType.OnHold ? "disabled" : "") type="text" style="width: 95%" name="comment@((int)Model.Function)" class="on-hold" value="@onholdComment" id="on-hold-comment@((int)Model.Function)" /></td>
+            </tr>
+            <tr>
+                <td class="b r">Factory Name</td>
+                <td id="factName2@((int)Model.Function)">@Model.Item.FactoryName</td>
+                <td class="b">Main Label</td>
+                <td><input type="text" style="width: 95%" id="main-label@((int)Model.Function)" value="@Model.Item.MainLabel" /></td>
+            </tr>
+            <tr>
+                <td class="b r">Factory Manager</td>
+                <td><input type="text" style="width: 95%" id="factory-manager@((int)Model.Function)" value="@Model.Item.FactoryManager" /></td>
+                <td class="b">Qty Inspected</td>
+                <td><span style="width: 95%" id="qty-inspected@((int)Model.Function)">@Model.POs.Sum(p => p.InspectedQty)</span></td>
+            </tr>
+            <tr>
+                <td class="b r">Actual Inspection Date</td>
+                <td>@Html.Partial("_DatePicker2", new POMQC.ViewModels.Base.DatePickerViewModel { Date = Model.DateRange.From.Date })</td>
+                <td class="b">Actual Product Qty</td>
+                <td><span style="width: 95%" id="act-product-qty@((int)Model.Function)">@Model.POs.Sum(p => p.ActualProductQty)</span></td>
+            </tr>
+        </table>
+        <br />
+        <div>
+        <div style="margin-right: 5px; float: left">
+        <table style="width: auto">
+            <thead>
+                <tr>
+                    <td colspan="8">WORKMANSHIP AQL</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">
+                        ORDER QTY (units)</td>
+                    <td rowspan="2">
+                        SAMPLE SIZE (units)</td>
+                    <td colspan="2" class="col11@((int)Model.Function)">
+                        AQL 1.0</td>
+                    <td colspan="2" class="col12@((int)Model.Function)">
+                        AQL 1.5</td>
+                    <td colspan="2" class="col13@((int)Model.Function)">
+                        AQL 2.5</td>
+                </tr>
+                <tr>
+                    <td class="col11@((int)Model.Function)">
+                        ACCEPT</td>
+                    <td class="col11@((int)Model.Function)">
+                        REJECT</td>
+                    <td class="col12@((int)Model.Function)">
+                        ACCEPT</td>
+                    <td class="col12@((int)Model.Function)">
+                        REJECT</td>
+                    <td class="col13@((int)Model.Function)">
+                        ACCEPT</td>
+                    <td class="col13@((int)Model.Function)">
+                        REJECT</td>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    Upto - 150</td>
+                <td>
+                    20</td>
+                <td class="col11@((int)Model.Function)">
+                    0</td>
+                <td class="col11@((int)Model.Function)">
+                    0</td>
+                <td class="col12@((int)Model.Function)">
+                    0</td>
+                <td class="col12@((int)Model.Function)">
+                    0</td>
+                <td class="col13@((int)Model.Function)">
+                    1</td>
+                <td class="col13@((int)Model.Function)">
+                    2</td>
+            </tr>
+            <tr>
+                <td>
+                    151 - 280</td>
+                <td>
+                    32</td>
+                <td class="col11@((int)Model.Function)">
+                    0</td>
+                <td class="col11@((int)Model.Function)">
+                    1</td>
+                <td class="col12@((int)Model.Function)">
+                    1</td>
+                <td class="col12@((int)Model.Function)">
+                    2</td>
+                <td class="col13@((int)Model.Function)">
+                    2</td>
+                <td class="col13@((int)Model.Function)">
+                    3</td>
+            </tr>
+            <tr>
+                <td>
+                    281 - 500</td>
+                <td>
+                    50</td>
+                <td class="col11@((int)Model.Function)">
+                    1</td>
+                <td class="col11@((int)Model.Function)">
+                    2</td>
+                <td class="col12@((int)Model.Function)">
+                    2</td>
+                <td class="col12@((int)Model.Function)">
+                    3</td>
+                <td class="col13@((int)Model.Function)">
+                    3</td>
+                <td class="col13@((int)Model.Function)">
+                    4</td>
+            </tr>
+            <tr>
+                <td>
+                    501 - 1200</td>
+                <td>
+                    80</td>
+                <td class="col11@((int)Model.Function)">
+                    2</td>
+                <td class="col11@((int)Model.Function)">
+                    3</td>
+                <td class="col12@((int)Model.Function)">
+                    3</td>
+                <td class="col12@((int)Model.Function)">
+                    4</td>
+                <td class="col13@((int)Model.Function)">
+                    5</td>
+                <td class="col13@((int)Model.Function)">
+                    6</td>
+            </tr>
+            <tr>
+                <td>
+                    1201 - 3200</td>
+                <td>
+                    125</td>
+                <td class="col11@((int)Model.Function)">
+                    3</td>
+                <td class="col11@((int)Model.Function)">
+                    4</td>
+                <td class="col12@((int)Model.Function)">
+                    5</td>
+                <td class="col12@((int)Model.Function)">
+                    6</td>
+                <td class="col13@((int)Model.Function)">
+                    7</td>
+                <td class="col13@((int)Model.Function)">
+                    8</td>
+            </tr>
+            <tr>
+                <td>
+                    3201 - 10000</td>
+                <td>
+                    200</td>
+                <td class="col11@((int)Model.Function)">
+                    5</td>
+                <td class="col11@((int)Model.Function)">
+                    6</td>
+                <td class="col12@((int)Model.Function)">
+                    7</td>
+                <td class="col12@((int)Model.Function)">
+                    8</td>
+                <td class="col13@((int)Model.Function)">
+                    10</td>
+                <td class="col13@((int)Model.Function)">
+                    11</td>
+            </tr>
+            <tr>
+                <td>
+                    10001 - 35000</td>
+                <td>
+                    315</td>
+                <td class="col11@((int)Model.Function)">
+                    7</td>
+                <td class="col11@((int)Model.Function)">
+                    8</td>
+                <td class="col12@((int)Model.Function)">
+                    10</td>
+                <td class="col12@((int)Model.Function)">
+                    11</td>
+                <td class="col13@((int)Model.Function)">
+                    14</td>
+                <td class="col13@((int)Model.Function)">
+                    15</td>
+            </tr>
+            <tr>
+                <td>
+                    35000 or greater</td>
+                <td>
+                    500</td>
+                <td class="col11@((int)Model.Function)">
+                    10</td>
+                <td class="col11@((int)Model.Function)">
+                    11</td>
+                <td class="col12@((int)Model.Function)">
+                    14</td>
+                <td class="col12@((int)Model.Function)">
+                    15</td>
+                <td class="col13@((int)Model.Function)">
+                    21</td>
+                <td class="col13@((int)Model.Function)">
+                    22</td>
+            </tr>
+        </table>
+        </div>
+        <div>
+        <table style="width: auto">
+            <thead>
+                <tr>
+                    <td colspan="8">MEASUREMENT AQL</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">
+                        ORDER QTY (units)</td>
+                    <td rowspan="2">
+                        SAMPLE SIZE (units)</td>
+                    <td colspan="2" style="width: 30%" class="col23@((int)Model.Function)">
+                            AQL 2.5</td>
+                    <td colspan="2" style="width: 30%" class="col21@((int)Model.Function)">
+                            AQL 4.0</td>
+                    <td colspan="2" style="width: 30%" class="col22@((int)Model.Function)">
+                            AQL 6.5</td>
+                </tr>
+                <tr>
+                    <td class="col23@((int)Model.Function)">
+                        ACCEPT</td>
+                    <td class="col23@((int)Model.Function)">
+                        REJECT</td>
+                    <td class="col21@((int)Model.Function)">
+                        ACCEPT</td>
+                    <td class="col21@((int)Model.Function)">
+                        REJECT</td>
+                    <td class="col22@((int)Model.Function)">
+                        ACCEPT</td>
+                    <td class="col22@((int)Model.Function)">
+                        REJECT</td>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    Upto - 280</td>
+                <td>
+                    13</td>
+                <td class="col23@((int)Model.Function)">
+                    0</td>
+                <td class="col23@((int)Model.Function)">
+                    1</td>
+                <td class="col21@((int)Model.Function)">
+                    1</td>
+                <td class="col21@((int)Model.Function)">
+                    2</td>
+                <td class="col22@((int)Model.Function)">
+                    2</td>
+                <td class="col22@((int)Model.Function)">
+                    3</td>
+            </tr>
+            <tr>
+                <td>
+                    281 - 500</td>
+                <td>
+                    20</td>
+                <td class="col23@((int)Model.Function)">
+                    1</td>
+                <td class="col23@((int)Model.Function)">
+                    2</td>
+                <td class="col21@((int)Model.Function)">
+                    2</td>
+                <td class="col21@((int)Model.Function)">
+                    3</td>
+                <td class="col22@((int)Model.Function)">
+                    3</td>
+                <td class="col22@((int)Model.Function)">
+                    4</td>
+            </tr>
+            <tr>
+                <td>
+                    501 - 1200</td>
+                <td>
+                    32</td>
+                <td class="col23@((int)Model.Function)">
+                    2</td>
+                <td class="col23@((int)Model.Function)">
+                    3</td>
+                <td class="col21@((int)Model.Function)">
+                    3</td>
+                <td class="col21@((int)Model.Function)">
+                    4</td>
+                <td class="col22@((int)Model.Function)">
+                    5</td>
+                <td class="col22@((int)Model.Function)">
+                    6</td>
+            </tr>
+            <tr>
+                <td>
+                    1201 - 3200</td>
+                <td>
+                    50</td>
+                <td class="col23@((int)Model.Function)">
+                    3</td>
+                <td class="col23@((int)Model.Function)">
+                    4</td>
+                <td class="col21@((int)Model.Function)">
+                    5</td>
+                <td class="col21@((int)Model.Function)">
+                    6</td>
+                <td class="col22@((int)Model.Function)">
+                    7</td>
+                <td class="col22@((int)Model.Function)">
+                    8</td>
+            </tr>
+            <tr>
+                <td>
+                    3201 - 10000</td>
+                <td>
+                    80</td>
+                <td class="col23@((int)Model.Function)">
+                    5</td>
+                <td class="col23@((int)Model.Function)">
+                    6</td>
+                <td class="col21@((int)Model.Function)">
+                    7</td>
+                <td class="col21@((int)Model.Function)">
+                    8</td>
+                <td class="col22@((int)Model.Function)">
+                    10</td>
+                <td class="col22@((int)Model.Function)">
+                    11</td>
+            </tr>
+        </table>
+        </div>
+        </div>
+        <div style="clear: both"></div>
+        <br />
+        <table id="po-list@((int)Model.Function)">
+            <thead>
+                <tr class="b c">
+                    <td>AIGL PO</td>
+                    <td>Customer PO</td>
+                    <td>Style</td>
+                    <td>Color or Code</td>
+                    <td>Order Qty/color</td>
+                    <td>Inspected Qty</td>
+                    <td>Actual Product Qty</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.POs.Any())
+                {
+                <tr>
+                    <td colspan="7" class="c">There is no information</td>
+                </tr>    
+                }
+                else
+                {
+                    var id = 0;
+                    foreach (var po in Model.POs)
+                    {                        
+                <tr>                    
+                    <td>@po.AIGLPO<input type="hidden" id="fdid-@((int)Model.Function)-@id" value="@po.FinalDetailId" /></td>
+                    <td>@po.CustPO</td>
+                    <td id="style-@((int)Model.Function)-@id">@po.Style</td>
+                    <td id="color-@((int)Model.Function)-@id">@po.Color</td>
+                    <td class="r" id="qty-@((int)Model.Function)-@id">@po.OrderQuantity</td>
+                    <td class="r"><input id="ins-@((int)Model.Function)-@id" value="@po.InspectedQty" /></td>
+                    <td class="r"><input id="act-@((int)Model.Function)-@id" value="@po.ActualProductQty" /></td>
+                </tr>    
+                        ++id;
+                    }
+                }
+            </tbody>
+            <tfoot>
+                <tr class="b r">
+                    <td colspan="4">TOTAL</td>
+                    <td id="sum-po-list@((int)Model.Function)">@(Model.POs.Any() ? Model.POs.Sum(p => p.OrderQuantity).ToString("#,###") : "0")</td>
+                    <td id="sum-ins-list@((int)Model.Function)">@(Model.POs.Any() ? Model.POs.Sum(p => p.InspectedQty).ToString("#,###") : "0")</td>
+                    <td id="sum-act-list@((int)Model.Function)">@(Model.POs.Any() ? Model.POs.Sum(p => p.ActualProductQty).ToString("#,###") : "0")</td>
+                </tr>
+            </tfoot>
+        </table>        
+        <br />
+        <div class="content-nested">
+            <div class="b">Cartons open during inspection (circle carton# open for workmanship audit):</div>
+            <div>
+                <textarea rows="2" style="width: 100%" id="carton-comment@((int)Model.Function)">@Model.Item.CartonComment</textarea>
+            </div>
+        </div>
+        <br />
+        <table>
+            <thead>
+                <tr class="c">
+                    <td colspan="4" class="b">
+                        INSPECTION SUMMARY</td>
+                </tr>                
+            </thead>    
+            <tr class="c">
+                <td class="b">
+                    INSPECTION PROPERTY</td>
+                <td class="b">
+                    PASSED</td>
+                <td class="b">
+                    FAILED</td>
+                <td class="b">
+                    COMMENTS</td>
+            </tr>                
+            <tr class="c">
+                <td class="b">
+                    Visual / Workmanship</td>
+                <td>
+                    <input type="radio" name="sum-inspect@((int)Model.Function)" @(Model.Item.WorkmanshipStatus == StatusType.Pass ? "checked" : string.Empty) /></td>
+                <td>
+                    <input type="radio" name="sum-inspect@((int)Model.Function)" @(Model.Item.WorkmanshipStatus == StatusType.Failed ? "checked" : string.Empty) /></td>
+                <td>
+                    <input type="text" style="width: 95%" id="sum-comment@((int)Model.Function)" value="@Model.Item.WorkmanshipComment" /></td>
+            </tr>
+            <tr class="c">-
+                <td class="b">
+                    Spec measurement</td>
+                <td>
+                    <input type="radio" name="sum-inspect2@((int)Model.Function)" @(Model.Item.MeasurementStatus == StatusType.Pass ? "checked" : string.Empty) /></td>
+                <td>
+                    <input type="radio" name="sum-inspect2@((int)Model.Function)" @(Model.Item.MeasurementStatus == StatusType.Failed ? "checked" : string.Empty) /></td>
+                <td>
+                    <input type="text" style="width: 95%" id="sum-comment2@((int)Model.Function)" value="@Model.Item.MeasurementComment" /></td>
+            </tr>
+            <tr class="c">
+                <td class="b">
+                    Packaging &amp; Packing Integrity</td>
+                <td>
+                    <input type="radio" name="sum-inspect3@((int)Model.Function)" @(Model.Item.PackingStatus == StatusType.Pass ? "checked" : string.Empty) /></td>
+                <td>
+                    <input type="radio" name="sum-inspect3@((int)Model.Function)" @(Model.Item.PackingStatus == StatusType.Failed ? "checked" : string.Empty) /></td>
+                <td>
+                    <input type="text" style="width: 95%" id="sum-comment3@((int)Model.Function)" value="@Model.Item.PackingComment" /></td>
+            </tr>
+        </table>
+        <br />
+        <div class="content-nested">
+            <div class="b">COMMENTS</div>
+            <div>
+                <textarea rows="2" style="width: 100%" id="final-comment@((int)Model.Function)">@Model.Item.Comment</textarea>
+            </div>
+        </div>
+        <br />
+        <table id="tbl-final@((int)Model.Function)">
+            <thead>
+                <tr class="b c">
+                    <td style="width: 60%">DEFECT DESCRIPTION</td>
+                    <td style="width: 20%">DEFECT LOCATION</td>
+                    <td style="width: 10%">MAJOR</td>
+                    <td>MINOR</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Defects.Any())
+                {
+                    foreach (var defect in Model.Defects)
+                    {
+                <tr>
+                    <td>
+                        <input type="hidden" name="ddefid@((int)Model.Function)" value="@defect.DdefId" />
+                        <select name="codes@((int)Model.Function)" style="width: 95%" onchange="changeDefectFinal(this, @((int)Model.Function), @index);">
+                            @foreach (var group in groupCodes)
+                            {
+                            <optgroup label="@group.First().CatName">
+                                @foreach (var item in group)
+                                {
+                                    var selectedCode = defect.DefId == item.DefId ? "selected" : string.Empty;
+                                <option major="@((int)item.Type)" @selectedCode value="@item.DefId">@(string.IsNullOrWhiteSpace(item.DefCode) ? "- " + item.DefName : item.DefCode + " - " + item.DefName + (string.IsNullOrWhiteSpace(item.DefVN) ? " -" : " - " + item.DefVN))</option>    
+                                }                                
+                            </optgroup>                                    
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <select name="locations@((int)Model.Function)" style="width: 95%">
+                            @foreach (var item in defectLocations)
+                            {
+                                var selectedLoc = defect.LocId == item.LocId ? "selected" : string.Empty;
+                            <option @selectedLoc value="@item.LocId">@item.LocName</option>    
+                            }
+                        </select>
+                    </td>
+                    <td id="def-0@(index)@((int)Model.Function)">@Html.Raw(defect.Type == DefectType.Major ? "<input type='text' style='width: 95%' class='r' name='defect" + ((int)Model.Function) + "' value='" + defect.Total + "' />" : string.Empty)</td>
+                    <td id="def-1@(index)@((int)Model.Function)">@Html.Raw(defect.Type == DefectType.Minor ? "<input type='text' style='width: 95%' class='r' name='defect" + ((int)Model.Function) + "' value='" + defect.Total + "' />" : string.Empty)</td>
+                </tr>
+                            ++index;
+                    }
+                }
+                <tr>
+                    <td>
+                        <input type="hidden" name="ddefid@((int)Model.Function)" value="0" />
+                        <select name="codes@((int)Model.Function)" style="width: 95%" onchange="changeDefectFinal(this, @((int)Model.Function), @index);">
+                            @foreach (var group in groupCodes)
+                            {
+                            <optgroup label="@group.First().CatName">
+                                @foreach (var item in group)
+                                {
+                                <option major="@((int)item.Type)" value="@item.DefId">@(string.IsNullOrWhiteSpace(item.DefCode) ? "- " + item.DefName : item.DefCode + " - " + item.DefName)</option>    
+                                }                                
+                            </optgroup>                                    
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <select name="locations@((int)Model.Function)" style="width: 95%">
+                            @foreach (var item in defectLocations)
+                            {
+                            <option value="@item.LocId">@item.LocName</option>    
+                            }
+                        </select>
+                    </td>
+                    <td id="def-0@(index)@((int)Model.Function)"></td>
+                    <td id="def-1@(index)@((int)Model.Function)"></td>
+                </tr>                
+            </tbody>
+            <tfoot>
+                <tr class="b r">
+                    <td colspan="2">TOTAL</td>
+                    <td id="total-defect@((int)Model.Function)">@(Model.Defects.Any() ? Model.Defects.Where(d => d.Type == DefectType.Major).Sum(d => d.Total) : 0)</td>
+                    <td id="total-defect2@((int)Model.Function)">@(Model.Defects.Any() ? Model.Defects.Where(d => d.Type == DefectType.Minor).Sum(d => d.Total) : 0)</td>
+                </tr>
+            </tfoot>
+        </table>
+        <br />
+        <div class="content-main">
+            <div class="b">SPEC MEASUREMENT & PACKING INTEGRITY AUDIT</div>
+            @if (Model.IsReadOnly)
+            {
+            <div class="swiper-container2@((int)Model.Function)" style="border-bottom: none; height: 292px">
+                <div class="swiper-wrapper" id="img2@((int)Model.Function)">
+                    @foreach (var item in Model.Item.Images)
+                    {
+                        if (item.hasImage)
+                        {
+                    <a class="swiper-slide" data-lightbox="img2@((int)Model.Function)" href="@Url.Content("~/Images/Uploads/" + item.name)" style="background:url(@Url.Content("~/Images/Uploads/" + item.name))"></a>        
+                        }
+                    }    
+                </div>
+                <div class="swiper-button-next2@((int)Model.Function)"></div>
+                <div class="swiper-button-prev2@((int)Model.Function)"></div>
+            </div>
+            }
+            else
+            {            
+            <div style="max-height: 244px; overflow: auto">
+                <form style="border: 1px solid #ccc; height:auto" action="@Url.Content("~/final/upload")" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm2@((int)Model.Function)">
+                    <div class="fallback">
+                        <input name="img2@((int)Model.Function)" type="file" multiple />            
+                    </div>    
+                </form>   
+            </div>
+            }
+        </div>
+        <br />
+        <div class="content-nested">
+            <div class="b">QA's COMMENTS</div>
+            <div>
+                <textarea rows="2" style="width: 100%" id="qa-comment@((int)Model.Function)">@Model.Item.QAComment</textarea>
+            </div>
+        </div>
+        <br />
+        <div class="content-nested">
+            <div class="b">FACTORY CAPTION</div>
+            <div>
+                <textarea rows="2" style="width: 100%" id="factory-caption@((int)Model.Function)">@Model.Item.FactoryCaption</textarea>
+            </div>
+        </div>
+        <br />
+        <span class="b">QA AUDITOR:</span><input type="text" id="qa-auditor@((int)Model.Function)" value="@Model.Item.QAAuditor" />
+        <span class="b">FACTORY REP:</span><input type="text" id="factory-rep@((int)Model.Function)" value="@Model.Item.FactoryRep" />
+        <span class="b">AIGL QA MANAGER:</span><input type="text" id="qa-manager@((int)Model.Function)" value="@Model.Item.QAManager" />
+    </div>
+    @if (!Model.IsReadOnly)
+    {
+    <a href="javascript:;" class="btn btn-primary" role="button" id="submit2@((int)Model.Function)">Save</a>
+    <script type="text/javascript">
+        //File Upload response from the server
+        Dropzone.options.dropzoneForm2@((int)Model.Function) = {
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 100,
+            maxFiles: 100,
+            acceptedFiles: AcceptedImageTypes,
+            maxFilesize: 500,
+
+            init: function () {
+                this.on("success", function (data) {
+                    if (data.xhr.status == 500) {
+                        showMessage(2@((int)Model.Function), 'An error occurs, please check network connection, file types or try again later.', true);
+                    }
+                    else{
+                        var result = JSON.parse(data.xhr.responseText);
+                        showMessage(2@((int)Model.Function), result.Message, !result.IsSuccess);
+                    }
+
+                    unblockUI();
+                });
+
+                this.on("error", function (data) {
+                    showMessage(2@((int)Model.Function), 'An error occurs, please check network connection, file types or try again later.', true);
+                    unblockUI();
+                });
+
+                var submitButton = document.querySelector("#submit2@((int)Model.Function)");
+                var wrapperThis = this;
+                var custId = 0;
+                var custPO = '';
+                var aiglPO = '';
+
+                submitButton.addEventListener("click", function () {
+                    var aql = $('input[name="aql@((int)Model.Function)"]');
+                    var aql2 = $('input[name="aql2@((int)Model.Function)"]');
+                    var selectedAQL = false;
+                    var selectedAQL2 = false;
+
+                    var final = $('input[name="final@((int)Model.Function)"]');
+                    var selectedFinalStatus = false;
+
+                    var sumInspect = $('input[name="sum-inspect@((int)Model.Function)"]');
+                    var sumInspect2 = $('input[name="sum-inspect2@((int)Model.Function)"]');
+                    var sumInspect3 = $('input[name="sum-inspect3@((int)Model.Function)"]');
+                    var selectedInspect = false;
+                    var selectedInspect2 = false;
+                    var selectedInspect3 = false;
+                    var qtyInspected = $('#qty-inspected@((int)Model.Function)').val().trim();
+                    var actProductQty = $('#act-product-qty@((int)Model.Function)').val().trim();
+
+                    var codes = getDefectCodes(@((int)Model.Function));
+                    var locations = getDefectLocations(@((int)Model.Function));
+
+                    var tr = $('#main tr.selected-row');
+
+                    if (tr && tr[0] && tr[0].cells) {
+                        var custName = tr[0].cells[2].innerText;
+                        var options = model.Customers;
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].CustName == custName) {
+                                custId = options[i].CustId;
+                                break;
+                            }
+                        }
+
+                        custPO = tr[0].cells[1].innerText;
+                        aiglPO = tr[0].cells[0].innerText;
+                    }
+
+                    custId = custId != '0' ? custId : $("#ddlCUST").val();
+                    custPO = custPO != '0' ? custPO : $("#ddlCUSTPO").val();
+                    aiglPO = aiglPO != '0' ? aiglPO : $("#ddlAIGLPO").val();
+
+                    for (var i = 0; i < aql.length; i++) {
+                        if ($(aql[i]).is(':checked')) {
+                            selectedAQL = true;
+                            break;
+                        }
+                    }
+                    for (var i = 0; i < aql2.length; i++) {
+                        if ($(aql2[i]).is(':checked')) {
+                            selectedAQL2 = true;
+                            break;
+                        }
+                    }
+
+                    for (var i = 0; i < final.length; i++) {
+                        if ($(final[i]).is(':checked')) {
+                            selectedFinalStatus = true;
+                            break;
+                        }
+                    }
+
+                    for (var i = 0; i < sumInspect.length; i++) {
+                        if ($(sumInspect[i]).is(':checked')) {
+                            selectedInspect = true;
+                            break;
+                        }
+                    }
+                    for (var i = 0; i < sumInspect2.length; i++) {
+                        if ($(sumInspect2[i]).is(':checked')) {
+                            selectedInspect2 = true;
+                            break;
+                        }
+                    }
+                    for (var i = 0; i < sumInspect3.length; i++) {
+                        if ($(sumInspect3[i]).is(':checked')) {
+                            selectedInspect3 = true;
+                            break;
+                        }
+                    }
+
+                    if ($("#finalid@((int)Model.Function)").val() == '0' && (custId == '0' || custPO == '0' || aiglPO == '0')) {
+                        showMessage(2@((int)Model.Function), 'Please select Customer, Customer PO and AIGL PO.', true);
+                    }
+                    else if (!selectedAQL) {
+                        showMessage(2@((int)Model.Function), 'Please select Workmanship AQL.', true);
+                    }
+                    else if (!selectedAQL2) {
+                        showMessage(2@((int)Model.Function), 'Please select Measurement AQL.', true);
+                    }
+                    else if (!selectedFinalStatus){
+                        showMessage(2@((int)Model.Function), 'Please select Final Status: PASS / REJECT / ON HOLD.', true);
+                    }
+                    else if (!selectedInspect){
+                        showMessage(2@((int)Model.Function), 'Please select Visual/Workmanship Status: PASS / FAILED.', true);
+                    }
+                    else if (!selectedInspect2){
+                        showMessage(2@((int)Model.Function), 'Please select Spec Measurement Status: PASS / FAILED.', true);
+                    }
+                    else if (!selectedInspect3){
+                        showMessage(2@((int)Model.Function), 'Please select Packaging & Packing Integrity Status: PASS / FAILED.', true);
+                    }
+                    else if (codes.split(',').length != locations.split(',').length || 
+                        codes.split(',').length == 0 || locations.split(',').length == 0 ||
+                        (codes.split(',') != '' && locations.split(',') == '') ||
+                        (codes.split(',') == '' && locations.split(',') != '')) {
+                        showMessage(2@((int)Model.Function), 'Please select defect and location.', true);
+                    }
+                    else if (wrapperThis.getQueuedFiles().length > 0) {
+                        wrapperThis.processQueue();
+                    }
+                    else {
+                        // Upload anyway without files
+                        wrapperThis.uploadFiles([{name:'nofiles'}]);
+                    }
+                });
+
+                this.on("addedfile", function (file) {
+
+                    // Create the remove button
+                    var removeButton = Dropzone.createElement("<button class='btn btn-xs btn-warning' style='width: 120px; cursor: pointer'>Delete</button>");
+
+                    // Listen to the click event
+                    removeButton.addEventListener("click", function (e) {
+                        // Make sure the button click doesn't submit the form:
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // If you want to the delete the file on the server as well,
+                        // you can do the AJAX request here.
+                        if (confirm('File will be deleted on server, cannot rollback, are you sure?')) {                    
+                            $.ajax({
+                                url: resolveClientUrl('final/delete'),
+                                type: 'post',
+                                data: {
+                                    finalid: $("#finalid@((int)Model.Function)").val(),                                
+                                    img: file.name
+                                },
+                                dataType: 'application/json'
+                            }).complete(function (result) {      
+                                var res = $.parseJSON(result.responseText);
+                                if(res && !res.IsSuccess){
+                                    alert(res.Message);
+                                }
+                                else {
+                                    // Remove the file preview.
+                                    wrapperThis.removeFile(file);
+                                }
+                            });
+                        }
+                    });
+
+                    // Add the button to the file preview element.
+                    file.previewElement.appendChild(removeButton);
+                });
+
+                // Send all form and input data below to server
+                this.on('sendingmultiple', function (data, xhr, formData) {
+                    blockUI();
+
+                    var codes = getDefectCodes(@((int)Model.Function));
+                    var locations = getDefectLocations(@((int)Model.Function));
+                    var ids = getDefectIds(@((int)Model.Function));
+
+                    var inspect = $('input[name="sum-inspect@((int)Model.Function)"]');
+                    var inspect2 = $('input[name="sum-inspect2@((int)Model.Function)"]');
+                    var inspect3 = $('input[name="sum-inspect3@((int)Model.Function)"]');
+                    var inspectStatus = $(inspect[0]).is(':checked') ? 1 : 2;
+                    var inspectStatus2 = $(inspect2[0]).is(':checked') ? 1 : 2;
+                    var inspectStatus3 = $(inspect3[0]).is(':checked') ? 1 : 2;
+
+                    var final = $('input[name="final@((int)Model.Function)"]');
+                    var finalC = $('input[name="comment@((int)Model.Function)"]');
+                    var finalStatus = $(final[0]).is(':checked') ? 1 : $(final[1]).is(':checked') ? 2 : 3;
+                    var finalComment = $(final[0]).is(':checked') ? $(finalC[0]).val() : $(final[1]).is(':checked') ? $(finalC[1]).val() : $(finalC[2]).val();
+                    
+                    var aql = $('input[name="aql@((int)Model.Function)"]');
+                    var aql2 = $('input[name="aql2@((int)Model.Function)"]');
+                    var wAQL = $(aql[0]).is(':checked') ? 1 : $(aql[1]).is(':checked') ? 2 : 3;
+                    var mAQL = $(aql2[0]).is(':checked') ? 6 : $(aql2[1]).is(':checked') ? 4 : 5;
+                    var totalDefects = getDefectTotal(@((int)Model.Function));
+                    
+                    formData.append("CustId", custId);
+                    formData.append("CustPO", custPO);
+                    formData.append("AIGLPO", aiglPO);
+                    formData.append("Comment", $("#final-comment@((int)Model.Function)").val() || 'N/A');
+                    formData.append("Type", @((int)Model.Function));
+                    formData.append("AuditedBy", $("#audited-by@((int)Model.Function)").val() || 'N/A');
+                    formData.append("MainLabel", $("#main-label@((int)Model.Function)").val() || 'N/A');
+                    formData.append("FactoryManager", $("#factory-manager@((int)Model.Function)").val() || 'N/A');
+                    formData.append("QtyInspected", $("#qty-inspected@((int)Model.Function)").val() || 'N/A');
+                    formData.append("CartonComment", $("#carton-comment@((int)Model.Function)").val() || 'N/A');
+                    formData.append("WorkmanshipStatus", inspectStatus);
+                    formData.append("WorkmanshipComment", $("#sum-comment@((int)Model.Function)").val() || 'N/A');
+                    formData.append("MeasurementStatus", inspectStatus2);
+                    formData.append("MeasurementComment", $("#sum-comment2@((int)Model.Function)").val() || 'N/A');
+                    formData.append("PackingStatus", inspectStatus3);
+                    formData.append("PackingComment", $("#sum-comment3@((int)Model.Function)").val() || 'N/A');
+                    formData.append("FinalStatus", finalStatus);
+                    formData.append("FinalComment", finalComment || 'N/A');
+                    formData.append("QAComment", $("#qa-comment@((int)Model.Function)").val() || 'N/A');
+                    formData.append("FactoryCaption", $("#factory-caption@((int)Model.Function)").val() || 'N/A');
+                    formData.append("QAAuditor", $("#qa-auditor@((int)Model.Function)").val() || 'N/A');
+                    formData.append("FactoryRep", $("#factory-rep@((int)Model.Function)").val() || 'N/A');
+                    formData.append("QAManager", $("#qa-manager@((int)Model.Function)").val() || 'N/A');
+                    formData.append("WorkmanshipAQL", wAQL);
+                    formData.append("MeasurementAQL", mAQL);                  
+                    
+                    formData.append("DefectCodes", codes || " ");
+                    formData.append("DefectLocs", locations || " ");
+                    formData.append("TotalDefects", totalDefects || " ");
+                    formData.append("CreatedDate", $('#date@((int)Model.Function)').html());
+                    formData.append("DefectIds", ids || " ");
+                    formData.append("FinalId", $("#finalid@((int)Model.Function)").val());
+
+                    var idx = @((int)Model.Function) == DHU.Prefinal ? 0 : 1;
+                    formData.append("ActualInspectionDate", $('.datepicker2')[idx].value);
+                    formData.append("ActualProductQuantity", $("#act-product-qty@((int)Model.Function)").val());
+
+                    formData.append("EntitiesString", JSON.stringify(getFinalPOs(@((int)Model.Function))));
+                });
+            }
+        };
+
+        var mockFiles@((int)Model.Function) = @Html.Raw(JsonConvert.SerializeObject(imgs));
+        $(document).ready(function(){
+            setTimeout(function(){
+                var aql = $('input[name="aql@((int)Model.Function)"]');
+                var aql2 = $('input[name="aql2@((int)Model.Function)"]');
+
+                if (@((int)Model.Item.WorkmanshipAQL) == 1) {
+                    $(aql[0]).prop('checked', true);
+                    changeAQL(aql[0], 1, 2, 3, @((int)Model.Function));
+                }
+                else if (@((int)Model.Item.WorkmanshipAQL) == 2) {
+                    $(aql[1]).prop('checked', true);
+                    changeAQL(aql[1], 2, 1, 3, @((int)Model.Function));
+                }
+                else if (@((int)Model.Item.WorkmanshipAQL) == 3) {
+                    $(aql[2]).prop('checked', true);
+                    changeAQL(aql[2], 3, 2, 1, @((int)Model.Function));
+                }
+
+                if (@((int)Model.Item.MeasurementAQL) == 4) {
+                    $(aql2[0]).prop('checked', true);
+                    changeAQL2(aql2[0], 1, 2, @((int)Model.Function));
+                }
+                else if (@((int)Model.Item.MeasurementAQL) == 5) {
+                    $(aql2[1]).prop('checked', true);
+                    changeAQL2(aql2[1], 2, 1, @((int)Model.Function));
+                }
+            }, 3000);
+        });
+    </script>
+    }
+    <a href="javascript:window.print();" class="btn btn-primary" role="button">Print</a>    
+    <a id="export-final@((int)Model.Function)" href="@Url.Content("~/final/export?custId=" + Model.Item.CustId + "&custPO=" + Model.Item.CustPO + "&aiglPO=" + Model.Item.AIGLPO + "&date=" + Model.Item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff") + "&type=" + ((int)Model.Function))" target="_blank" class="btn btn-primary" role="button">Export Excel</a>
+    <a id="export-final2@((int)Model.Function)" href="@Url.Content("~/final/exportpdf?custId=" + Model.Item.CustId + "&custPO=" + Model.Item.CustPO + "&aiglPO=" + Model.Item.AIGLPO + "&date=" + Model.Item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff") + "&type=" + ((int)Model.Function))" target="_blank" class="btn btn-primary" role="button">Export PDF</a>
+    <a href="mailto:" class="btn btn-primary" role="button">Open Mail</a>
+    <a id="export-final3@((int)Model.Function)" href="javascript:sendMail(false, @Model.Item.CustId, '@Model.Item.CustPO', '@Model.Item.AIGLPO', '@Model.Item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff")', @((int)Model.Function));" class="btn btn-primary" role="button">Send Mail</a>
+</div>

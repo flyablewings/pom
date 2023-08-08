@@ -1,0 +1,533 @@
+﻿@using POMQC.ViewModels.Base;
+@using Newtonsoft.Json;
+@using POMQC.ViewModels.Inspection;
+@{
+    Layout = null;
+    var count = 0;
+    string shirt = "", pant = "", _short = "", coatJacket = "", woven = "", knit = "", skort = "", skirt = "";
+    var defectColumns = Model.DefectCodeMultiColumns;
+    if (Model.Item.DHUId > 0)
+    {
+        if (Model.Item.Type == POMQC.Entities.Base.DHUItem.Shirt)
+        {
+            shirt = "selected";
+        }
+        else if (Model.Item.Type == POMQC.Entities.Base.DHUItem.Pant)
+        {
+            pant = "selected";
+        }
+        else if (Model.Item.Type == POMQC.Entities.Base.DHUItem.Short)
+        {
+            _short = "selected";
+        }
+        else if (Model.Item.Type == POMQC.Entities.Base.DHUItem.CoatJacket)
+        {
+            coatJacket = "selected";
+        }
+
+        if (Model.Item.Type2 == POMQC.Entities.Base.DHUStyle.Woven)
+        {
+            woven = "selected";
+        }
+        else if (Model.Item.Type2 == POMQC.Entities.Base.DHUStyle.Knit)
+        {
+            knit = "selected";
+        }
+    }
+
+    var defectCodes = Model.DefectCodes.Where(c => c.Active).GroupBy(c => c.CatName);
+    var defectLocations = Model.DefectLocations.Where(c => c.Active);
+    var imgs = Model.Item.Images;
+    decimal defectRate = 100;
+    decimal defectRateProduct = 10;
+    var groupCodes = Model.DefectCodes.Where(c => c.Active).GroupBy(c => c.CatName);
+    if (Model.Defects.Any())
+    {
+        defectRate = decimal.Round((decimal)Model.Defects.Sum(m => m.PCSQty == 0 ? 1 : m.PCSQty) / Model.Item.AuditSampleSize * 100, 2);
+        defectRateProduct = decimal.Round((decimal)Model.Defects.Sum(m => m.Total == 0 ? 1 : m.Total) * 100 / Model.Item.AuditSampleSize, 2);
+    }
+}
+@model DHUViewModel
+<div class="container tab-pane fade" id="@Model.Function">    
+    <div class="content-main">
+        <input type="hidden" id="dhuid@((int)Model.Function)" value="@Model.Item.DHUId" />
+        <input type="hidden" id="agentId@((int)Model.Function)" value="@Model.Item.AgentId" />
+        <div id="errmsg2@((int)Model.Function)" style="display: none"></div>
+        <div class="dashboard-tbl">
+            <table id="dhu@((int)Model.Function)">
+                <thead>
+                    <tr>
+                        <td>No.</td>
+                        <td>Created Date</td>
+                        <td>Created By</td>
+                        <td>Updated Date</td>
+                        <td>Updated By</td>
+                    </tr>
+                </thead>
+                <tbody style="cursor: pointer">
+                    @if (Model.Items.Count == 0)
+                    {
+                    <tr>
+                        <td colspan="5" class="c">There is no information</td>
+                    </tr>    
+                    }
+                    @foreach (var item in Model.Items)
+                    {
+                        ++count;
+                    <tr onclick="viewDHU(this, @item.CustId, '@item.CustPO', '@item.AIGLPO', '@item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff")', @((int)item.DHUType), @((int)Model.Function))" class="@(count == 1 ? "selected-row" : string.Empty)">
+                        <td>@count</td>
+                        <td>@item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff")</td>
+                        <td>@item.CreatedUser</td>
+                        <td>@item.UpdatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff")</td>
+                        <td>@item.UpdatedUser</td>
+                    </tr>                    
+                    }
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <div class="c form-header-title"><div style="font-weight: bold; padding: 3px" id="dhu-title@((int)Model.Function)">@(Model.Function.ToString().ToUpperInvariant()) DHU - PRODUCT QUALITY</div></div>
+        <table>
+            <tr>
+                <td style="width: 25%" rowspan="2" class="c"><span class="b">Date:</span> <span id="date@((int)Model.Function)">@(Model.Item.DHUId > 0 ? Model.Item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff") : DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff"))</span></td>
+                <td style="width: 25%" class="b">Product Type</td>
+                <td style="width: 25%" class="b">Material Type</td>
+                <td rowspan="2"><img alt="Logo" src="@Url.Content("~/Images/logo.png")" /></td>
+            </tr>
+            <tr>    
+                <td>
+                    <select id="type@((int)Model.Function)">
+                        <option value="0">Select type</option>                            
+                        <option value="1" @shirt>Shirt</option>
+                        <option value="2" @pant>Pant</option>
+                        <option value="3" @_short>Short</option>
+                        <option value="4" @coatJacket>Coat/Jacket</option>
+                        <option value="5" @skort>Skort</option>
+                        <option value="6" @skirt>Skirt</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="type2@((int)Model.Function)">
+                        <option value="0">Select material</option>                            
+                        <option value="1" @woven>Woven</option>
+                        <option value="2" @knit>Knit</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table>
+            <tr>
+                <td style="width: 25%" class="b">AIGL PO</td>
+                <td style="width: 25%" id="aiglPO@((int)Model.Function)">@Model.Item.AIGLPO</td>
+                <td style="width: 25%" class="b">Inspector</td>
+                <td><input type="text" style="width: 95%" id="inspector@((int)Model.Function)" value="@Model.Item.Inspector" /></td>
+            </tr>
+            <tr>
+                <td class="b">Customer PO</td>
+                <td id="custPO@((int)Model.Function)">@Model.Item.CustPO</td>
+                <td class="b">PO Quantity</td>
+                <td><input type="text" style="width: 95%" id="po-qty@((int)Model.Function)" value="@(Model.Item.POQty == 0 ? 0 : Model.Item.POQty)" /></td>
+            </tr>
+            <tr>
+                <td class="b">Customer Name</td>
+                <td id="custName@((int)Model.Function)">@Model.Item.CustName</td>
+                <td class="b">Output Quantity</td>
+                <td><input type="text" style="width: 95%" id="output-qty@((int)Model.Function)" value="@(Model.Item.OutputQty == 0 ? 0 : Model.Item.OutputQty)" /></td>
+            </tr>
+            <tr>
+                <td class="b">Style</td>
+                <td>
+                    <select id="style@((int)Model.Function)">
+                        <option>@Model.Item.Style</option>
+                    </select>                    
+                </td>
+                <td class="b">Audit Sample Size</td>
+                <td><input type="text" style="width: 95%" id="audit-size@((int)Model.Function)" value="@(Model.Item.AuditSampleSize == 0 ? 10 : Model.Item.AuditSampleSize)" /></td>
+            </tr>
+            <tr>
+                <td class="b">Factory Name</td>
+                <td id="factoryName@((int)Model.Function)">@Model.Item.FactoryName</td>
+                <td class="b">Country</td>
+                <td><input type="text" style="width: 95%" id="country@((int)Model.Function)" value="@(string.IsNullOrWhiteSpace(Model.Item.Country) ? "Vietnam" : Model.Item.Country)" /></td>
+            </tr>
+            <tr>
+                <td class="b">Factory Number</td>
+                <td id="factoryId@((int)Model.Function)">@Model.Item.FactoryId</td>
+                <td class="b">Line Number</td>
+                <td><input type="text" style="width: 95%" id="line-no@((int)Model.Function)" value="@Model.Item.LineNumber" /></td>
+            </tr>
+            <tr>
+                <td class="b">Agent</td>
+                <td id="agent@((int)Model.Function)">@Model.Item.AgentName</td>
+                <td class="b">Brand</td>
+                <td id="brand@((int)Model.Function)">@Model.Item.Brand</td>
+            </tr>
+        </table>
+        <br />
+        <table id="tbl-dhu@((int)Model.Function)">
+            <thead>
+                <tr class="header-row-bg">
+                    <td colspan="2" style="width: 50%" class="b c">DEFECTS LIST</td>
+                    <td colspan="3" style="width: 50%" class="b c">NUMBER OF DEFECTIVE UNITS</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="sub-header-row-bg">
+                    <td style="width: 200px" class="b c">DEFECT DESCRIPTION</td>
+                    <td style="width: 100px" class="b c">DEFECT LOCATION</td>
+                    <td style="width: 15%" class="b c">DEFECT PCS QTY</td>
+                    <td style="width: 15%" class="b c">Counting Space</td>
+                    <td style="width: 10%" class="b c">Total</td>
+                </tr>
+                @if (Model.Defects.Any())
+                {
+                    foreach (var defect in Model.Defects)
+                    {
+                <tr>
+                    <td>
+                        <input type="hidden" name="ddefid@((int)Model.Function)" value="@defect.DdefId" />
+                        <select name="codes@((int)Model.Function)" style="width: 95%" onchange="changeDefectCode(this, @((int)Model.Function));">
+                            @foreach (var group in groupCodes)
+                            {
+                            <optgroup label="@group.First().CatName">
+                                @foreach (var item in group)
+                                {
+                                var selected = item.DefId == defect.DefId ? "selected" : string.Empty;
+                                <option @selected value="@item.DefId">@(string.IsNullOrWhiteSpace(item.DefCode) ? "- " + item.DefName : item.DefCode + " - " + item.DefName + (string.IsNullOrWhiteSpace(item.DefVN) ? " -" : " - " + item.DefVN))</option>    
+                                }                                
+                            </optgroup>                                    
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <select name="locations@((int)Model.Function)" style="width: 95%">
+                            @foreach (var item in defectLocations)
+                            {
+                                var selected = item.LocId == defect.LocId ? "selected" : string.Empty;
+                            <option @selected value="@item.LocId">@item.LocName</option>    
+                            }
+                        </select>
+                    </td>
+                    <td><input class="r" value="@defect.PCSQty" name="pcs@((int)Model.Function)" type="text" style="width: 95%" /></td>
+                    <td><input class="r" value="@defect.Total" name="defect@((int)Model.Function)" type="text" style="width: 95%" /></td>
+                    <td class="r">@defect.Total</td>
+                </tr>
+                    }
+                }
+                <tr>
+                    <td>
+                        <input type="hidden" name="ddefid@((int)Model.Function)" value="0" />
+                        <select name="codes@((int)Model.Function)" style="width: 95%" onchange="changeDefectCode(this, @((int)Model.Function));">
+                            @foreach (var group in groupCodes)
+                            {
+                            <optgroup label="@group.First().CatName">
+                                @foreach (var item in group)
+                                {
+                                <option value="@item.DefId">@(string.IsNullOrWhiteSpace(item.DefCode) ? "- " + item.DefName : item.DefCode + " - " + item.DefName)</option>    
+                                }                                
+                            </optgroup>                                    
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <select name="locations@((int)Model.Function)" style="width: 95%">
+                            @foreach (var item in defectLocations)
+                            {
+                            <option value="@item.LocId">@item.LocName</option>    
+                            }
+                        </select>
+                    </td>
+                    <td><input class="r" value="1" name="pcs@((int)Model.Function)" type="text" style="width: 95%" /></td>
+                    <td><input class="r" value="1" name="defect@((int)Model.Function)" type="text" style="width: 95%" /></td>
+                    <td class="r">1</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="b r">TOTAL DEFECTS</td>
+                    <td class="b r" id="grand-1@((int)Model.Function)">@(!Model.Defects.Any() ? 0 : Model.Defects.Sum(m => m.Total))</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="b r">DEFECTIVE RATE OF PRODUCT</td>
+                    <td class="b r" id="grand-3@((int)Model.Function)">@(defectRateProduct)%</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="b r">TOTAL DEFECTIVE PRODUCTS</td>
+                    <td class="b r" id="grand-2@((int)Model.Function)">@(!Model.Defects.Any() ? 0 : Model.Defects.Sum(m => m.PCSQty))</td>
+                </tr>                
+                <tr>
+                    <td colspan="4" class="b r">DEFECTIVE RATE</td>
+                    <td class="b r" id="grand-4@((int)Model.Function)">@(defectRate)%</td>
+                </tr>
+            </tfoot>
+        </table>
+        <br />
+        <div class="content-main">            
+            <div class="b">DEFECT IMAGES</div>
+            @if (Model.IsReadOnly)
+            {
+            <div class="swiper-container2@((int)Model.Function)" style="border-bottom: none; height: 292px">
+                <div class="swiper-wrapper" id="img2@((int)Model.Function)">
+                    @foreach (var item in Model.Item.Images)
+                    {
+                        if (item.hasImage)
+                        {
+                    <a class="swiper-slide" data-lightbox="img2@((int)Model.Function)" href="@Url.Content("~/Images/Uploads/" + item.name)" style="background:url(@Url.Content("~/Images/Uploads/" + item.name))"></a>
+                        }
+                    }    
+                </div>
+                <div class="swiper-button-next2@((int)Model.Function)"></div>
+                <div class="swiper-button-prev2@((int)Model.Function)"></div>
+            </div>
+            }
+            else
+            {
+            <div style="max-height: 244px; overflow: auto">
+                <form style="border: 1px solid #ccc; height:auto" action="@Url.Content("~/dhu/upload")" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm2@((int)Model.Function)">
+                    <div class="fallback">
+                        <input name="img2@((int)Model.Function)" type="file" multiple />            
+                    </div>    
+                </form>   
+            </div>
+            }
+        </div>
+        <div class="content-nested">
+            <div class="b">COMMENTS</div>
+            <div>
+                <textarea id="comment2@((int)Model.Function)" style="width: 100%" rows="2">@Model.Item.Comment</textarea>
+            </div>
+        </div>
+    </div>
+    @if (!Model.IsReadOnly)
+    {
+    <a href="javascript:;" class="btn btn-primary" role="button" id="submit2@((int)Model.Function)">Save</a>
+    }
+    <a href="javascript:window.print();" class="btn btn-primary" role="button">Print</a>
+    <a id="export-dhu@((int)Model.Function)" href="@Url.Content("~/dhu/export?custId=" + Model.Item.CustId + "&custPO=" + Model.Item.CustPO + "&aiglPO=" + Model.Item.AIGLPO +  "&date=" + Model.Item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff") + "&type=" + ((int)Model.Function))" target="_blank" class="btn btn-primary" role="button">Export Excel</a>
+    <a id="export-dhu2@((int)Model.Function)" href="@Url.Content("~/dhu/exportpdf?custId=" + Model.Item.CustId + "&custPO=" + Model.Item.CustPO + "&aiglPO=" + Model.Item.AIGLPO +  "&date=" + Model.Item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff") + "&type=" + ((int)Model.Function))" target="_blank" class="btn btn-primary" role="button">Export PDF</a>
+    <a href="mailto:" class="btn btn-primary" role="button">Open Mail</a>
+    <a id="export-dhu3@((int)Model.Function)" href="javascript:sendMail(true, @Model.Item.CustId, '@Model.Item.CustPO', '@Model.Item.AIGLPO', '@Model.Item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss.fff")', @((int)Model.Function));" class="btn btn-primary" role="button">Send Mail</a>
+</div>
+@if (Model.Function == InspectionFunctionViewModel.Cutting)
+{
+<script type="text/javascript">
+    var defectCodes = @Html.Raw(JsonConvert.SerializeObject(defectCodes));
+    var defectLocations = @Html.Raw(JsonConvert.SerializeObject(defectLocations));  
+    var defectMultiColumns = @Html.Raw(JsonConvert.SerializeObject(defectColumns));  
+
+    //$('#combomult@((int)Model.Function)').inputpicker(defectMultiColumns);
+</script>   
+}
+@if (!Model.IsReadOnly)
+{
+<script type="text/javascript">
+    //File Upload response from the server
+    Dropzone.options.dropzoneForm2@((int)Model.Function) = {
+        autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 100,
+        maxFiles: 100,
+        acceptedFiles: AcceptedImageTypes,
+        maxFilesize: 500,
+
+        init: function () {
+            this.on("success", function (data) {
+                if (data.xhr.status == 500) {
+                    showMessage(2@((int)Model.Function), 'An error occurs, please check network connection, file types or try again later.', true);
+                }
+                else{
+                    var result = JSON.parse(data.xhr.responseText);
+                    showMessage(2@((int)Model.Function), result.Message, !result.IsSuccess);
+                }
+
+                unblockUI();
+            });
+
+            this.on("error", function (data) {
+                showMessage(2@((int)Model.Function), 'An error occurs, please check network connection, file types or try again later.', true);
+                unblockUI();
+            });
+
+            var submitButton = document.querySelector("#submit2@((int)Model.Function)");
+            var wrapperThis = this;
+            var custId = 0;
+            var custPO = '';
+            var aiglPO = '';
+
+            submitButton.addEventListener("click", function () {
+                var codes = getDefectCodes(@((int)Model.Function));
+                var locations = getDefectLocations(@((int)Model.Function));
+                var pcs = getDefectPCS(@((int)Model.Function)).split(',');
+                var total = getDefectTotal(@((int)Model.Function)).split(',');
+                var pcsOK = true;
+                var totalOK = true;
+				var totalValid = true;
+
+                var tr = $('.selected-row');
+
+                if (tr && tr[0] && tr[0].cells) {
+                    var custName = tr[0].cells[2].innerText;
+                    var options = model.Customers;
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].CustName == custName) {
+                            custId = options[i].CustId;
+                            break;
+                        }
+                    }
+
+                    custPO = tr[0].cells[1].innerText;
+                    aiglPO = tr[0].cells[0].innerText;
+                }
+
+                custId = custId != '0' ? custId : $("#ddlCUST").val();
+                custPO = custPO != '0' ? custPO : $("#ddlCUSTPO").val();
+                aiglPO = aiglPO != '0' ? aiglPO : $("#ddlAIGLPO").val();
+
+                for (var i = 0; i < pcs.length; i++) {
+                    if (isNaN(pcs[i]) || pcs[i] == '0' || $.trim(pcs[i]) == '' || parseInt(pcs[i]) < 0) {
+                        pcsOK = false;
+                        break;
+                    }
+                }
+
+                for (var i = 0; i < total.length; i++) {
+                    if (isNaN(total[i]) || total[i] == '0' || $.trim(total[i]) == '' || parseInt(total[i]) < 0) {
+                        totalOK = false;
+                        break;
+                    }
+                }
+				
+				for (var i = 0; i < total.length; i++) {
+                    if (parseInt(pcs[i]) > parseInt(total[i])) {
+                        totalValid = false;
+                        break;
+                    }
+                }
+
+                if ($("#dhuid@((int)Model.Function)").val() == '0' && (custId == '0' || custPO == '0' || aiglPO == '0')) {
+                    showMessage(2@((int)Model.Function), 'Please select Customer, Customer PO and AIGL PO.', true);
+                }
+                else if ($('#type@((int)Model.Function)').val() == '0') {
+                    showMessage(2@((int)Model.Function), 'Please select Product Type.', true);
+                }
+                else if ($('#type2@((int)Model.Function)').val() == '0') {
+                    showMessage(2@((int)Model.Function), 'Please select Material Type.', true);
+                }
+                else if(isNaN($('#po-qty@((int)Model.Function)').val()) || $('#po-qty@((int)Model.Function)').val() == '0' || $.trim($('#po-qty@((int)Model.Function)').val()) == '') {
+                    showMessage(2@((int)Model.Function), 'Please input PO quantity.', true);
+                }
+                else if(isNaN($('#output-qty@((int)Model.Function)').val()) || $('#output-qty@((int)Model.Function)').val() == '0' || $.trim($('#output-qty@((int)Model.Function)').val()) == '') {
+                    showMessage(2@((int)Model.Function), 'Please input Output quantity.', true);
+                }
+                else if(isNaN($('#audit-size@((int)Model.Function)').val()) || $('#audit-size@((int)Model.Function)').val() == '0' || $.trim($('#audit-size@((int)Model.Function)').val()) == '') {
+                    showMessage(2@((int)Model.Function), 'Please input Audit sample size.', true);
+                }
+                else if (codes.split(',').length != locations.split(',').length || 
+                    codes.split(',').length == 0 || locations.split(',').length == 0 ||
+                    (codes.split(',') != '' && locations.split(',') == '') ||
+                    (codes.split(',') == '' && locations.split(',') != '')) {
+                    showMessage(2@((int)Model.Function), 'Please select defect and location.', true);
+                }
+				else if (!totalValid){
+					showMessage(2@((int)Model.Function), 'Counting Space must be greater than or equal to DEFECT PCS QTY.', true);
+				}
+                else if (!pcsOK || !totalOK) {
+                    showMessage(2@((int)Model.Function), 'Please input PCS quantity and Counting Space for defect.', true);
+                }                
+                else if (wrapperThis.getQueuedFiles().length > 0) {
+                    wrapperThis.processQueue();
+                }
+                else {
+                    // Upload anyway without files
+                    wrapperThis.uploadFiles([{name:'nofiles'}]);
+                }
+            });
+
+            this.on("addedfile", function (file) {
+
+                // Create the remove button
+                var removeButton = Dropzone.createElement("<button class='btn btn-xs btn-warning' style='width: 120px; cursor: pointer'>Delete</button>");
+
+                // Listen to the click event
+                removeButton.addEventListener("click", function (e) {
+                    // Make sure the button click doesn't submit the form:
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // If you want to the delete the file on the server as well,
+                    // you can do the AJAX request here.
+                    if (confirm('File will be deleted on server, cannot rollback, are you sure?')) {                    
+                        $.ajax({
+                            url: resolveClientUrl('dhu/delete'),
+                            type: 'post',
+                            data: {
+                                dhuid: $("#dhuid@((int)Model.Function)").val(),                                
+                                img: file.name
+                            },
+                            dataType: 'application/json'
+                        }).complete(function (result) {      
+                            var res = $.parseJSON(result.responseText);
+                            if(res && !res.IsSuccess){
+                                alert(res.Message);
+                            }
+                            else {
+                                // Remove the file preview.
+                                wrapperThis.removeFile(file);
+                            }
+                        });
+                    }
+                });
+
+                // Add the button to the file preview element.
+                file.previewElement.appendChild(removeButton);
+            });
+
+            // Send all form and input data below to server
+            this.on('sendingmultiple', function (data, xhr, formData) {
+                blockUI();
+                    
+                var codes = getDefectCodes(@((int)Model.Function));
+                var locations = getDefectLocations(@((int)Model.Function));
+                var pcs = getDefectPCS(@((int)Model.Function));
+                var total = getDefectTotal(@((int)Model.Function));
+                var country = $("#country@((int)Model.Function)").val();
+                var inspector = $("#inspector@((int)Model.Function)").val();
+                var lineNumber = $("#line-no@((int)Model.Function)").val();
+                var outputQty = $("#output-qty@((int)Model.Function)").val();
+                var poQty = $("#po-qty@((int)Model.Function)").val();
+                var auditSize = $('#audit-size@((int)Model.Function)').val();
+                var ids = getDefectIds(@((int)Model.Function));
+                var comment = $("#comment2@((int)Model.Function)").val();
+
+                formData.append("CustId", custId);
+                formData.append("CustPO", custPO);
+                formData.append("AIGLPO", aiglPO);
+                formData.append("AgentId", $("#agentId@((int)Model.Function)").val());
+                formData.append("FactoryId", $("#factoryId@((int)Model.Function)").html());                
+                formData.append("AuditSampleSize", auditSize == '' ? 0 : auditSize);
+                formData.append("Comment", comment == '' ? 'N/A' : comment);
+                formData.append("DHUType", @((int)Model.Function));
+
+                formData.append("DHUId", $("#dhuid@((int)Model.Function)").val());
+                formData.append("Country", country == '' ? 'Vietname' : country);
+                formData.append("Inspector", inspector == '' ? 'N/A' : inspector);
+                formData.append("LineNumber", lineNumber == '' ? 'N/A' : lineNumber);
+                formData.append("OutputQty", outputQty == '' ? 0 : outputQty);
+                formData.append("POQty", poQty == '' ? 0 : poQty);
+                formData.append("Type", $("#type@((int)Model.Function)").val());
+                formData.append("Type2", $("#type2@((int)Model.Function)").val());
+                                        
+                formData.append("DefectCodes", codes || " ");
+                formData.append("DefectLocs", locations || " ");
+                formData.append("PCSQuantities", pcs || " ");
+                formData.append("TotalDefects", total || " ");
+                formData.append("CreatedDate", $('#date@((int)Model.Function)').html());
+                formData.append("DefectIds", ids || " ");
+
+                formData.append("Style", $('#style@((int)Model.Function)').val());
+            });
+        }
+    };
+</script>    
+}

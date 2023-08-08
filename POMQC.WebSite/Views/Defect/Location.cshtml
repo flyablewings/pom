@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Defect Location";
+    Layout = null;
+}
+@model POMQC.Entities.Defect.DefectLocation
+<style>
+    tr:hover
+    {
+	    background-color: #fff !important;
+	    border: none !important;
+    }
+</style>
+<div>
+    <div id="errmsg" style="display: none"></div>
+    <input type="hidden" id="locid" value="@Model.LocId" />
+    <table class="normal-table">
+        <tr>
+            <td class="r">Location Name</td>
+            <td>@Html.TextBoxFor(m => m.LocName, new { style = "width: 200px" })</td>
+        </tr>
+        <tr>
+            <td class="r">Active</td>
+            <td>@Html.CheckBoxFor(m => m.Active)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button" class="btn btn-primary" role="button" onclick="addLocation()" value="Submit" /></td>
+        </tr>
+    </table>
+</div>

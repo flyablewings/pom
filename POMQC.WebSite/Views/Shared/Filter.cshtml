@@ -1,0 +1,158 @@
+﻿@{
+    Layout = null;
+    var factories = Model.Factories.Select(i => new SelectListItem { Text = i.FactoryName, Value = i.FactoryId.ToString() }).ToList();
+    var customers = Model.Customers.GroupBy(i => i.CustName).Select(i => new SelectListItem { Text = i.First().CustName, Value = i.First().CustId.ToString() }).ToList();
+    var model = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+    var showFactory = 0;
+
+    if (Model.ShowAllLabel)
+    {
+        factories.Insert(0, new SelectListItem { Text = "All", Value = "0" });
+    }
+
+    if (Model.ShowFactory)
+    {
+        showFactory = 1;
+    }
+}
+@model POMQC.ViewModels.Filter.FilterViewModel
+<div class="header-filter">
+    @if (Model.ShowFactory)
+    {
+    <span class="b">FACTORY</span>
+    @Html.DropDownListFor(m => m.Factories, factories, new { @id = "ddlFACT", @onchange = "javascript:ChangeFactory(this);" }) 
+    <span class="b">CUSTOMER</span>
+    @Html.DropDownListFor(m => m.Customers, new List<SelectListItem>(), new { @id = "ddlCUST", @onchange = "javascript:ChangeCustomer(this);" })   
+    }
+    else
+    {
+    <span class="b">CUSTOMER</span>
+    @Html.DropDownListFor(m => m.Customers, customers, new { @id = "ddlCUST", @onchange = "javascript:ChangeCustomer(this);" })        
+    }
+    <span class="b">CUST PO</span> 
+    @Html.DropDownListFor(m => m.CustPOs, new List<SelectListItem>(), new { @id = "ddlCUSTPO", @onchange = "javascript:ChangeCustPO(this);" })
+    <span class="b">AIGL PO</span> 
+    @Html.DropDownListFor(m => m.AIGLPOs, new List<SelectListItem>(), new { @id = "ddlAIGLPO", @onchange = "javascript:ChangeAIGLPO(this);" })
+    @if (Model.ShowStatus)
+    {
+    <span class="b">STATUS</span>
+    <select id="ddlStatus" onchange="javascript:ChangeStatus(this);">
+        <option value="0">All</option>
+        <option value="1" selected>Opening</option>
+        <option value="2">Shipped</option>
+    </select>    
+    }    
+    @if (Model.ShowDateRange)
+    {
+    <span class="b">INLINE</span>
+    @Html.EditorFor(m => m.DateRange.From, "DatePicker")
+    <span class="b">TO</span>
+    @Html.EditorFor(m => m.DateRange.To, "DatePicker")    
+    }    
+    <span>
+        @if (Model.ShowViewButton)
+        {
+            <a href="javascript:ProcessViewFunction(@((int)Model.Function));" class="btn btn-primary" role="button" id="view">View</a>
+        }
+        @if (Model.ShowNewButton)
+        {
+            <a href="javascript:ProcessNewFunction(@((int)Model.Function));" class="btn btn-primary" role="button" id="new">New</a>
+        }        
+    </span>
+</div>
+<script type="text/javascript">
+    $('#ddlFACT').select2();
+    $('#ddlCUST').select2();    
+    $('#ddlCUSTPO').select2();
+    $('#ddlAIGLPO').select2();
+    $('#ddlStatus').select2();
+
+    var model = @Html.Raw(model);
+
+    function ChangeFactory(dropdown){
+        var selected = $(dropdown).val();
+        var cust = $('#ddlCUST').empty();
+        var customers = model.Customers;
+        if (selected == '0') {
+            cust.append('<option value="0">All</option>');
+        }
+        else {
+            if (model.ShowAllLabel) {
+                cust.append('<option value="0">All</option>');
+            }
+
+            for (var i = 0; i < customers.length; i++) {
+                if (customers[i].Parent == selected) {
+                    cust.append('<option value="' + customers[i].CustId + '">' + customers[i].CustName + '</option>');
+                }
+            }
+        }
+
+        ChangeCustomer($('#ddlCUST'));
+    }
+
+    function ChangeCustomer(dropdown) {
+        var selected = $(dropdown).val();
+        var custPO = $('#ddlCUSTPO').empty();
+        var custPOs = model.CustPOs;
+        if (selected == '0') {
+            custPO.append('<option value="0">All</option>');
+        }
+        else {
+            if (model.ShowAllLabel) {
+                custPO.append('<option value="0">All</option>');
+            }
+
+            for (var i = 0; i < custPOs.length; i++) {
+                if (custPOs[i].Parent == selected) {
+                    custPO.append('<option>' + custPOs[i].PO + '</option>');
+                }
+            }
+        }
+
+        ChangeCustPO($('#ddlCUSTPO'));
+    }
+
+    function ChangeCustPO(dropdown) {
+        var selected = $(dropdown).val();
+        var aiglPO = $('#ddlAIGLPO').empty();
+        var aiglPOs = model.AIGLPOs;
+        if (selected == '0') {
+            aiglPO.append('<option value="0">All</option>');
+        }
+        else {
+            if (model.ShowAllLabel) {
+                aiglPO.append('<option value="0">All</option>');
+            }
+
+            for (var i = 0; i < aiglPOs.length; i++) {
+                if (aiglPOs[i].Parent == selected) {
+                    aiglPO.append('<option>' + aiglPOs[i].PO + '</option>');
+                }
+            }
+        }
+
+        try {
+            ProcessViewFunction(@((int)Model.Function));
+        } catch (e) { unblockUI(); }
+    }
+
+    function ChangeStatus(dropdown){
+        try {
+            ProcessViewFunction(@((int)Model.Function));
+        } catch (e) { unblockUI(); }
+    }
+
+    function ChangeAIGLPO(dropdown) {
+        try {
+            ProcessViewFunction(@((int)Model.Function));
+        } catch (e) { unblockUI(); }
+    }
+
+    if (@showFactory) {
+        ChangeFactory($('#ddlFACT'));
+    }
+    else {
+        ChangeCustomer($('#ddlCUST'));
+    }    
+</script>

@@ -1,0 +1,92 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.ViewModels.Filter;
+@{
+    Layout = null;
+    var url = string.Format("/report/getallfinalexcel?from={0}&to={1}", DateTime.Now.AddMonths(-1).ToString("MM/dd/yyyy"), DateTime.Now.AddMonths(1).ToString("MM/dd/yyyy"));
+}
+@model ReportFinalViewModel
+<table id="report-final@((int)Model.Function)">
+    <thead>
+        <tr class="b c">
+            <td colspan="14"><div style="font-weight: bold; padding: 3px" id="report-title@((int)Model.Function)">@Html.Raw(Model.Title)</div></td>
+        </tr>
+        <tr class="b c">
+            <td>Factory</td>
+            <td>Customer</td>
+            <td>CUSTPO</td>
+            <td>AIGLPO</td>
+            <td>Style</td>
+            <td>Color</td>
+            <td>Order QTY</td>
+            <td>Actual Product QTY</td>
+            <td>Inspection QTY</td>
+            <td>PASSED</td>
+            <td>ON HOLD</td>
+            <td>REJECT</td>
+            <td>Created Date</td>
+            <td>Created By</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Items.Any())
+        {
+            foreach (var final in Model.Items)
+            {
+                <tr>
+                    <td colspan="14" class="b sup-header-row-bg">@final.Type.ToString().ToUpperInvariant()</td>
+                </tr>
+                var index = 0;
+                var styles = final.Styles.Count;
+                var rowSpan = styles > 1 ? "rowspan=\"" + styles + "\"" : string.Empty;
+                foreach (var item in final.Styles)
+                {
+                    if (index == 0)
+                    {
+                    <tr>
+                        <td @Html.Raw(rowSpan)>@final.FactoryName</td>
+                        <td @Html.Raw(rowSpan)>@final.CustName</td>
+                        <td @Html.Raw(rowSpan)>@final.CustPO</td>
+                        <td @Html.Raw(rowSpan)>@final.AIGLPO</td>
+                        <td>@item.Style</td>
+                        <td>@item.Color</td>
+                        <td class="r">@item.OrderQuantity</td>
+                        <td class="r">@item.ActualProductQty</td>
+                        <td class="r">@item.InspectedQty</td>
+                        <td class="c" @Html.Raw(rowSpan)>@(final.FinalStatus == POMQC.Entities.Base.StatusType.Pass ? "Yes" : string.Empty)</td>
+                        <td class="c" @Html.Raw(rowSpan)>@(final.FinalStatus == POMQC.Entities.Base.StatusType.OnHold ? "Yes" : string.Empty)</td>
+                        <td class="c" @Html.Raw(rowSpan)>@(final.FinalStatus == POMQC.Entities.Base.StatusType.Failed ? "Yes" : string.Empty)</td>
+                        <td @Html.Raw(rowSpan)>@final.CreateDate</td>
+                        <td @Html.Raw(rowSpan)>@final.CreatedUser</td>
+                    </tr>
+                    }
+                    else
+                    {
+                    <tr>
+                        <td>@item.Style</td>
+                        <td>@item.Color</td>
+                        <td class="r">@item.OrderQuantity</td>
+                        <td class="r">@item.ActualProductQty</td>
+                        <td class="r">@item.InspectedQty</td>
+                    </tr>
+                    }
+                    ++index;
+                }
+                <tr>
+                    <td colspan="6" class="b r">TOTAL</td>
+                    <td class="b r">@final.Styles.Sum(i => i.OrderQuantity)</td>
+                    <td class="b r">@final.Styles.Sum(i => i.ActualProductQty)</td>
+                    <td class="b r">@final.Styles.Sum(i => i.InspectedQty)</td>
+                    <td colspan="5"></td>
+                </tr>
+            }
+        }
+        else
+        {
+        <tr>
+            <td colspan="14" class="c">There is no information</td>
+        </tr>        
+        }
+    </tbody>
+</table>
+<a style="margin-top: 10px" href="javascript:window.print();" class="btn btn-primary" role="button">Print</a>
+<a id="report-final" style="margin-top: 10px" target="_blank" href="@url" class="btn btn-primary" role="button">Export Excel</a>

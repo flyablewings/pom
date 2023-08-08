@@ -1,0 +1,120 @@
+
+<table border="1">
+    <thead>
+        <tr>
+            <td colspan="9"><div style="text-align:center;font-weight: bold;">DHU MONTHLY REPORT<br />From: 05/01/2016, To: 07/07/2018</div></td>
+        </tr>
+        <tr style="text-align:center;font-weight: bold;">
+            <td>Factory</td>
+            <td>Year</td>
+            <td>Month</td>
+            <td>Output QTY</td>
+            <td>Inspection QTY</td>
+            <td>Product QTY</td>
+            <td>Product Percent</td>
+            <td>Defected QTY</td>
+            <td>Defected Percent</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>HOA THO</td>
+            <td>2017</td>
+            <td>12</td>
+            <td>100</td>            
+            <td>10</td>
+            <td>20</td>
+            <td>200</td>
+            <td>2</td>            
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>HOA THO</td>
+            <td>2018</td>
+            <td>3</td>
+            <td>200</td>            
+            <td>20</td>
+            <td>40</td>
+            <td>200</td>
+            <td>5</td>            
+            <td>25</td>
+        </tr>
+        <tr>
+            <td>MARCH 29</td>
+            <td>2017</td>
+            <td>12</td>
+            <td>513</td>            
+            <td>64</td>
+            <td>1232</td>
+            <td>1925</td>
+            <td>141</td>            
+            <td>220</td>
+        </tr>
+        <tr>
+            <td>MARCH 29</td>
+            <td>2018</td>
+            <td>1</td>
+            <td>500</td>            
+            <td>50</td>
+            <td>40</td>
+            <td>80</td>
+            <td>5</td>            
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>MARCH 29</td>
+            <td>2018</td>
+            <td>2</td>
+            <td>322</td>            
+            <td>43</td>
+            <td>85</td>
+            <td>197</td>
+            <td>12</td>            
+            <td>27</td>
+        </tr>
+        <tr>
+            <td>MARCH 29</td>
+            <td>2018</td>
+            <td>3</td>
+            <td>700</td>            
+            <td>70</td>
+            <td>242</td>
+            <td>345</td>
+            <td>41</td>            
+            <td>58</td>
+        </tr>
+        <tr>
+            <td>MARCH 29</td>
+            <td>2018</td>
+            <td>4</td>
+            <td>600</td>            
+            <td>60</td>
+            <td>40</td>
+            <td>66</td>
+            <td>4</td>            
+            <td>6</td>
+        </tr>
+        <tr>
+            <td>MARCH 29</td>
+            <td>2018</td>
+            <td>5</td>
+            <td>200</td>            
+            <td>20</td>
+            <td>50</td>
+            <td>250</td>
+            <td>7</td>            
+            <td>35</td>
+        </tr>
+        <tr>
+            <td>TGI</td>
+            <td>2018</td>
+            <td>5</td>
+            <td>200</td>            
+            <td>20</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>            
+            <td>0</td>
+        </tr>
+    </tbody>
+</table>

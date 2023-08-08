@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A13DD464-DC76-438F-92AE-1EE89FC4B0BD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>POMQC.ViewModels</RootNamespace>
+    <AssemblyName>POMQC.ViewModels</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\EmailViewModel.cs" />
+    <Compile Include="Account\LoginViewModel.cs" />
+    <Compile Include="Base\DHUMonthlyReportViewModel.cs" />
+    <Compile Include="Base\DatePickerViewModel.cs" />
+    <Compile Include="Base\DHUWeeklyReportViewModel.cs" />
+    <Compile Include="Base\ReportFinalViewModel.cs" />
+    <Compile Include="Base\ReportViewModelBaseFactory.cs" />
+    <Compile Include="Base\DHUDetailViewModel.cs" />
+    <Compile Include="Base\DHUItemsViewModel.cs" />
+    <Compile Include="Base\DHUViewModel.cs" />
+    <Compile Include="Base\EditorModel.cs" />
+    <Compile Include="Base\FactoryBase.cs" />
+    <Compile Include="Base\FileMapping.cs" />
+    <Compile Include="Base\FinalViewModel.cs" />
+    <Compile Include="Base\ReportViewModelBase.cs" />
+    <Compile Include="Base\ViewModelBase.cs" />
+    <Compile Include="Checklist\ChecklistFunctionViewModel.cs" />
+    <Compile Include="Checklist\ChecklistViewModel.cs" />
+    <Compile Include="Dashboard\DashboardViewModel.cs" />
+    <Compile Include="Dashboard\MailToViewModel.cs" />
+    <Compile Include="Dashboard\POInfoViewModel.cs" />
+    <Compile Include="Defect\DefectViewModel.cs" />
+    <Compile Include="Filter\CustomerViewModel.cs" />
+    <Compile Include="Filter\FilterViewModel.cs" />
+    <Compile Include="Filter\FunctionViewModel.cs" />
+    <Compile Include="Filter\POViewModel.cs" />
+    <Compile Include="Inspection\InspectionFunctionViewModel.cs" />
+    <Compile Include="Inspection\InspectionViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\ReportViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\POMQC.Entity\POMQC.Entities.csproj">
+      <Project>{2052A72B-2029-40CE-82CE-0ABD1E3F52B2}</Project>
+      <Name>POMQC.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

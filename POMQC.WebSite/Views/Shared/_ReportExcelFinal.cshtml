@@ -1,0 +1,86 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.ViewModels.Filter;
+@model ReportFinalViewModel
+<table id="report-final@((int)Model.Function)" border="1">
+    <thead>
+        <tr class="b c">
+            <td colspan="14"><div style="font-weight: bold; padding: 3px; text-align: center" id="report-title@((int)Model.Function)">@Html.Raw(Model.Title)</div></td>
+        </tr>
+        <tr style="text-align: center; font-weight: bold">
+            <td>Factory</td>
+            <td>Customer</td>
+            <td>CUSTPO</td>
+            <td>AIGLPO</td>
+            <td>Style</td>
+            <td>Color</td>
+            <td>Order QTY</td>
+            <td>Actual Product QTY</td>
+            <td>Inspection QTY</td>
+            <td>PASSED</td>
+            <td>ON HOLD</td>
+            <td>REJECT</td>
+            <td>Created Date</td>
+            <td>Created By</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Items.Any())
+        {
+            foreach (var final in Model.Items)
+            {
+                <tr>
+                    <td colspan="13" style="font-weight:bold">@final.Type.ToString().ToUpperInvariant()</td>
+                </tr>
+                var index = 0;
+                var styles = final.Styles.Count;
+                var rowSpan = styles > 1 ? "rowspan=\"" + styles + "\"" : string.Empty;
+                foreach (var item in final.Styles)
+                {
+                    if (index == 0)
+                    {
+                    <tr>
+                        <td style="vertical-align: middle" @Html.Raw(rowSpan)>@final.FactoryName</td>
+                        <td style="vertical-align: middle" @Html.Raw(rowSpan)>@final.CustName</td>
+                        <td style="vertical-align: middle" @Html.Raw(rowSpan)>@final.CustPO</td>
+                        <td style="vertical-align: middle" @Html.Raw(rowSpan)>@final.AIGLPO</td>
+                        <td>@item.Style</td>
+                        <td>@item.Color</td>
+                        <td style="text-align: right">@item.OrderQuantity</td>
+                        <td style="text-align: right">@item.ActualProductQty</td>
+                        <td style="text-align: right">@item.InspectedQty</td>
+                        <td style="text-align: center; vertical-align: middle" @Html.Raw(rowSpan)>@(final.FinalStatus == POMQC.Entities.Base.StatusType.Pass ? "Yes" : string.Empty)</td>
+                        <td style="text-align: center; vertical-align: middle" @Html.Raw(rowSpan)>@(final.FinalStatus == POMQC.Entities.Base.StatusType.OnHold ? "Yes" : string.Empty)</td>
+                        <td style="text-align: center; vertical-align: middle" @Html.Raw(rowSpan)>@(final.FinalStatus == POMQC.Entities.Base.StatusType.Failed ? "Yes" : string.Empty)</td>
+                        <td style="vertical-align: middle" @Html.Raw(rowSpan)>@final.CreatedDate</td>
+                        <td style="vertical-align: middle; text-align: center" @Html.Raw(rowSpan)>@final.CreatedUser</td>
+                    </tr>
+                    }
+                    else
+                    {
+                    <tr>
+                        <td>@item.Style</td>
+                        <td>@item.Color</td>
+                        <td style="text-align: right">@item.OrderQuantity</td>
+                        <td style="text-align: right">@item.ActualProductQty</td>
+                        <td style="text-align: right">@item.InspectedQty</td>
+                    </tr>
+                    }
+                    ++index;
+                }
+                <tr>
+                    <td colspan="6" style="text-align: right; font-weight: bold">TOTAL</td>
+                    <td style="text-align: right; font-weight: bold">@final.Styles.Sum(i => i.OrderQuantity)</td>
+                    <td style="text-align: right; font-weight: bold">@final.Styles.Sum(i => i.ActualProductQty)</td>
+                    <td style="text-align: right; font-weight: bold">@final.Styles.Sum(i => i.InspectedQty)</td>
+                    <td colspan="5"></td>
+                </tr>
+            }
+        }
+        else
+        {
+        <tr>
+            <td colspan="14" style="text-align: center">There is no information</td>
+        </tr>        
+        }
+    </tbody>
+</table>

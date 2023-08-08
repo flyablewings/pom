@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+@model POMQC.ViewModels.Account.EmailViewModel
+<style>
+    tr:hover
+    {
+	    background-color: #fff !important;
+	    border: none !important;
+    }
+</style>
+<div>
+    <div id="errmsgs" style="display: none"></div>
+    <table class="normal-table">        
+        <tr>
+            <td class="r">Email</td>
+            <td>@Html.TextBoxFor(m => m.Email, new { @style = "width: 95%" })</td>
+        </tr>
+        <tr>
+            <td class="r">Password</td>
+            <td>@Html.PasswordFor(m => m.Password, new { @style = "width: 95%" })</td>
+        </tr>
+        <tr>
+            <td class="r"></td>
+            <td><input type="button" value="Save" class="btn btn-primary" role="button" onclick="doConfigEmail()" /></td>
+        </tr>
+    </table>
+</div>

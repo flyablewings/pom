@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+    var action = Model.PathAndQuery;
+}
+@model POMQC.ViewModels.Dashboard.MailToViewModel
+<style>
+    tr:hover
+    {
+	    background-color: #fff !important;
+	    border: none !important;
+    }
+</style>
+<div>
+    <div id="errmsg" style="display: none"></div>
+    <table class="normal-table">        
+        <tr>
+            <td class="r">From</td>
+            <td>@Html.TextBoxFor(m => m.From, new { @style = "width: 75%", @readonly = "readonly" })<input type="button" value="Config" onclick="configEmail()" /></td>
+        </tr>
+        <tr>
+            <td class="r">To</td>
+            <td>@Html.TextBoxFor(m => m.To, new { @style = "width: 95%" })</td>
+        </tr>
+        <tr>
+            <td class="r">Cc</td>
+            <td>@Html.TextBoxFor(m => m.Cc, new { @style = "width: 95%" })</td>
+        </tr>
+        <tr>
+            <td class="r">Bcc</td>
+            <td>@Html.TextBoxFor(m => m.Bcc, new { @style = "width: 95%" })</td>
+        </tr>
+        <tr>
+            <td class="r">Subject</td>
+            <td>@Html.TextBoxFor(m => m.Subject, new { @style = "width: 95%" })</td>
+        </tr>
+        <tr>
+            <td class="r">Body</td>
+            <td>@Html.TextAreaFor(m => m.Body, new { @style = "width: 91%", @rows = 5 })</td>
+        </tr>
+        <tr>
+            <td class="r">Attachment</td>
+            <td><a href="@Url.Content(action)" target="_blank">@Html.TextBoxFor(m => m.Attachment, new { @readonly = "readonly", @style = "font-size: 10px; width: 95%; cursor: pointer; background-color: #fff; border: none" })</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button" class="btn btn-primary" role="button" onclick="doSendMail('@Url.Content(action)')" value="Send" /></td>
+        </tr>
+    </table>
+</div>

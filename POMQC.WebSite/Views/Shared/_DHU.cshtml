@@ -1,0 +1,163 @@
+﻿@using POMQC.ViewModels.Base;
+@using Newtonsoft.Json;
+@using POMQC.ViewModels.Inspection;
+@{
+    Layout = null;
+
+    var defectColumns = Model.DefectCodeMultiColumns;
+    var defectCodes = Model.DefectCodes.Where(c => c.Active).GroupBy(c => c.CatName);
+    var defectLocations = Model.DefectLocations.Where(c => c.Active);
+    var imgs = Model.Item.Images;
+    decimal defectRate = 0;
+    decimal defectRateProduct = 0;
+    var groupCodes = Model.DefectCodes.Where(c => c.Active).GroupBy(c => c.CatName);
+    if (Model.Defects.Any())
+    {
+        defectRate = decimal.Round((decimal)Model.Defects.Sum(m => m.PCSQty == 0 ? 1 : m.PCSQty) / Model.Item.AuditSampleSize * 100, 2);
+        defectRateProduct = decimal.Round((decimal)Model.Defects.Sum(m => m.Total == 0 ? 1 : m.Total) * 100 / Model.Item.AuditSampleSize, 2);
+    }
+}
+@model DHUViewModel
+<table id="reportDHU" border="1">
+    <tr>
+        <td colspan="5">
+            <div style="font-weight: bold; line-height: 25px; text-align: center" id="dhu-title@((int)Model.Function)">@(Model.Function.ToString().ToUpperInvariant()) DHU - PRODUCT QUALITY</div>
+        </td>
+    </tr>
+    <tr>
+        <td class="c"><span class="b">Date:</span> <span id="date@((int)Model.Function)">@(Model.Item.DHUId > 0 ? Model.Item.CreatedDate.ToString("MM/dd/yyyy") : DateTime.Now.ToString("MM/dd/yyyy"))</span></td>
+        <td class="b">Product Type: @Model.Item.Type</td>
+        <td class="b">Material Type: @Model.Item.Type2</td>
+        <td colspan="2">AURORA INVESTMENTS GLOBAL LIMITED</td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="width: 25%" class="b">AIGL PO</td>
+        <td style="width: 25%" id="aiglPO@((int)Model.Function)">@Model.Item.AIGLPO</td>
+        <td style="width: 25%" class="b">Inspector</td>
+        <td colspan="2">@Model.Item.Inspector</td>
+    </tr>
+    <tr>
+        <td class="b">Customer PO</td>
+        <td id="custPO@((int)Model.Function)">@Model.Item.CustPO</td>
+        <td class="b">PO Quantity</td>
+        <td style="text-align: right" colspan="2">@(Model.Item.POQty == 0 ? 100 : Model.Item.POQty)</td>
+    </tr>
+    <tr>
+        <td class="b">Customer Name</td>
+        <td id="custName@((int)Model.Function)">@Model.Item.CustName</td>
+        <td class="b">Output Quantity</td>
+        <td style="text-align: right" colspan="2">@(Model.Item.OutputQty == 0 ? 100 : Model.Item.OutputQty)</td>
+    </tr>
+    <tr>
+        <td class="b">Style</td>
+        <td id="style@((int)Model.Function)">@Model.Item.Style</td>
+        <td class="b">Audit Sample Size</td>
+        <td style="text-align: right" colspan="2">@(Model.Item.AuditSampleSize == 0 ? 10 : Model.Item.AuditSampleSize)</td>
+    </tr>
+    <tr>
+        <td class="b">Factory Name</td>
+        <td id="factoryName@((int)Model.Function)">@Model.Item.FactoryName</td>
+        <td class="b">Country</td>
+        <td colspan="2">@Model.Item.Country</td>
+    </tr>
+    <tr>
+        <td class="b">Factory Number</td>
+        <td id="factoryId@((int)Model.Function)">@Model.Item.FactoryId</td>
+        <td class="b">Line Number</td>
+        <td colspan="2">@Model.Item.LineNumber</td>
+    </tr>
+    <tr>
+        <td class="b">Agent</td>
+        <td id="agent@((int)Model.Function)">@Model.Item.AgentName</td>
+        <td class="b">Brand</td>
+        <td colspan="2" id="brand@((int)Model.Function)">@Model.Item.Brand</td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr class="header-row-bg">
+        <td colspan="2" class="b c" style="text-align: center">DEFECTS LIST</td>
+        <td colspan="3" class="b c" style="text-align: center">NUMBER OF DEFECTIVE UNITS</td>
+    </tr>
+    <tr class="sub-header-row-bg">
+        <td style="width: 20%; text-align: center" class="b c">DEFECT DESCRIPTION</td>
+        <td style="width: 20%; text-align: center" class="b c">DEFECT LOCATION</td>
+        <td style="width: 20%; text-align: center" class="b c">DEFECT PCS QTY</td>
+        <td style="width: 20%; text-align: center" class="b c">Counting Space</td>
+        <td style="text-align: center" class="b c">Total</td>
+    </tr>
+    @if (Model.Defects.Any())
+    {
+        foreach (var defect in Model.Defects)
+        {
+    <tr>
+        <td>
+        @foreach (var group in groupCodes)
+        {
+            foreach (var item in group)
+            {
+                if (item.DefId == defect.DefId)
+                {
+                    <div>@(string.IsNullOrWhiteSpace(item.DefCode) ? "- " + item.DefName : item.DefCode + " - " + item.DefName)</div>
+                    break;
+                }
+            }
+        }
+        </td>
+        <td>
+            @foreach (var item in defectLocations)
+            {
+                if (item.LocId == defect.LocId)
+                {
+                    <div>@item.LocName</div>
+                    break;
+                }
+            }
+        </td>
+        <td style="text-align: right">@defect.PCSQty</td>
+        <td style="text-align: right">@defect.Total</td>
+        <td style="text-align: right" class="r">@defect.Total</td>
+    </tr>
+        }
+    }
+    else
+    {
+    <tr>
+        <td>
+            None
+        </td>
+        <td>
+            None
+        </td>
+        <td style="text-align: right">0</td>
+        <td style="text-align: right">0</td>
+        <td style="text-align: right" class="r">0</td>
+    </tr>
+    }
+    <tr>
+        <td style="text-align: right" colspan="4" class="b r">TOTAL DEFECTS</td>
+        <td style="text-align: right" class="b r" id="grand-1@((int)Model.Function)">@(!Model.Defects.Any() ? 0 : Model.Defects.Sum(m => m.Total))</td>
+    </tr>
+    <tr>
+        <td style="text-align: right" colspan="4" class="b r">DEFECTIVE RATE OF PRODUCT</td>
+        <td style="text-align: right" class="b r" id="grand-3@((int)Model.Function)">@(defectRateProduct)%</td>
+    </tr>
+    <tr>
+        <td style="text-align: right" colspan="4" class="b r">TOTAL DEFECTIVE PRODUCTS</td>
+        <td style="text-align: right" class="b r" id="grand-2@((int)Model.Function)">@(!Model.Defects.Any() ? 0 : Model.Defects.Sum(m => m.PCSQty))</td>
+    </tr>                
+    <tr>
+        <td style="text-align: right" colspan="4" class="b r">DEFECTIVE RATE</td>
+        <td style="text-align: right" class="b r" id="grand-4@((int)Model.Function)">@(defectRate)%</td>
+    </tr>
+    <tr>
+        <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+        <td>COMMENTS</td>
+        <td colspan="4">@Model.Item.Comment</td>
+    </tr>
+</table>

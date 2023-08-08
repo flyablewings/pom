@@ -1,0 +1,109 @@
+﻿@using POMQC.ViewModels.Checklist;
+@{
+    Layout = null;
+    var funcName = "This Customer PO does not have ";
+    switch (Model.Function)
+    {
+        case ChecklistFunctionViewModel.FitSample:
+            funcName += "Fit Sample Approved";
+            break;
+        case ChecklistFunctionViewModel.PPSample:
+            funcName += "PP Sample Approved";
+            break;
+        case ChecklistFunctionViewModel.TopSample:
+            funcName += "Top Sample Approved";
+            break;
+        case ChecklistFunctionViewModel.QAChecklist:
+            funcName += "QA/QC Checklist";
+            break;
+        case ChecklistFunctionViewModel.PPMeeting:
+            funcName += "PP Meeting";
+            break;
+        default:
+            funcName += "Fabric Inspection";
+            break;
+    }
+}
+@model ChecklistViewModel
+<div class="container tab-pane fade in active" id="@Model.Function">
+    <div class="dashboard-tbl">
+        <table id="checklist@((int)Model.Function)">
+            <thead>
+                <tr>
+                    <td>Created Date</td>
+                    <td>Created By</td>
+                    <td>Updated Date</td>
+                    <td>Updated By</td>
+                </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+                @if (string.IsNullOrWhiteSpace(Model.Comment))
+                {
+                <tr>
+                    <td colspan="4" class="c">There is no information</td>
+                </tr>    
+                }
+                else
+                {
+                <tr>
+                    <td>@Model.CreateDate</td>
+                    <td>@Model.CreatedUser</td>
+                    <td>@(Model.UpdatedDate == System.DateTime.MinValue ? "--" : Model.UpdateDate)</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model.UpdatedUser) ? "--" : Model.UpdatedUser)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="content-main">
+@*        <div id="errmsg@((int)Model.Function)" class="@(Model.Doc == null ? "error" : string.Empty)" style="display: @(Model.Doc == null ? "block" : string.Empty)">@(Model.Doc == null ? funcName : string.Empty)</div>
+*@        <div>@Model.Title</div>
+        <div class="swiper-container@((int)Model.Function)" style="border-bottom: none; height: 292px">
+            <div class="swiper-wrapper" id="img@((int)Model.Function)">
+                @foreach (var item in Model.Images)
+                {
+                <a class="swiper-slide" data-lightbox="img@((int)Model.Function)" href="@Url.Content("~/Images/Uploads/" + item)" style="background:url(@Url.Content("~/Images/Uploads/" + item))"></a>
+                }    
+            </div>
+            <div class="swiper-button-next@((int)Model.Function)"></div>
+            <div class="swiper-button-prev@((int)Model.Function)"></div>
+        </div>                   
+    </div>
+    <div id="doc@((int)Model.Function)" class="content-main" style="display: @(Model.Documents.Any() ? "block" : "none")">
+        <div>DOCUMENTS</div>
+        <div style="border: 1px solid #ccc; padding: 20px 25px 30px 20px" id="doc-item@((int)Model.Function)">
+        @foreach (var item in Model.Documents)
+	    {
+		<a class="doc" href="@Url.Content("~/Images/Uploads/" + item)" target="_blank">@item</a>
+	    }
+        </div>
+    </div>
+    <div style="border: 1px solid #ccc; padding: 20px 35px 30px 20px ">
+        <div>COMMENTS</div>
+        <div><textarea id="comment@((int)Model.Function)" style="width: 100%; background-color: #fff" rows="2">@Model.Comment</textarea></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var swiper@((int)Model.Function) = new Swiper('.swiper-container@((int)Model.Function)', {
+        nextButton: '.swiper-button-next@((int)Model.Function)',
+        prevButton: '.swiper-button-prev@((int)Model.Function)',
+        effect: 'coverflow',
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: 'auto',
+        autoplay: 5000,
+        paginationClickable: true,
+        autoplayDisableOnInteraction: false,
+        coverflow: {
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true
+        }
+    });
+
+    if (@Model.Function != @POMQC.ViewModels.Checklist.ChecklistFunctionViewModel.FitSample) {
+        $('#@Model.Function').removeClass("active");
+    }
+</script>

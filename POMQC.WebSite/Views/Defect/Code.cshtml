@@ -1,0 +1,49 @@
+﻿@using POMQC.Entities.Base;
+@{
+    Layout = null;
+    ViewBag.Title = "Defect Description";
+    var selected = Model.CatId;
+    var categories = Model.Categories.Select(m => new SelectListItem { Text = m.CatName, Value = m.CatId.ToString(), Selected = selected == m.CatId });
+}
+@model POMQC.Entities.Defect.DefectCode
+<style>
+    tr:hover
+    {
+	    background-color: #fff !important;
+	    border: none !important;
+    }
+</style>
+<div>
+    <div id="errmsg" style="display: none"></div>
+    <input type="hidden" id="defid" value="@Model.DefId" />
+    <table class="normal-table">
+        <tr>
+            <td class="r">Category Name</td>
+            <td>@Html.DropDownListFor(m => m.CatId, categories, new { style = "width: 214px" })</td>
+        </tr>
+        <tr>
+            <td class="r">Defect Code</td>
+            <td>@Html.TextBoxFor(m => m.DefCode, new { style = "width: 200px" })</td>
+        </tr>
+        <tr>
+            <td class="r">Defect Description</td>
+            <td>@Html.TextBoxFor(m => m.DefName, new { style = "width: 200px" })</td>
+        </tr>
+        <tr>
+            <td class="r">Mô tả Tiếng Việt</td>
+            <td>@Html.TextBoxFor(m => m.DefVN, new { style = "width: 200px" })</td>
+        </tr>
+        <tr>
+            <td class="r">Defect Type</td>
+            <td><input type="checkbox" id="Type" @(Model.Type == DefectType.Major ? "checked" : string.Empty) />Is Major</td>
+        </tr>
+        <tr>
+            <td class="r">Active</td>
+            <td>@Html.CheckBoxFor(m => m.Active)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button" class="btn btn-primary" role="button" onclick="addCode()" value="Submit" /></td>
+        </tr>
+    </table>
+</div>

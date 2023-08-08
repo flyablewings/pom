@@ -1,0 +1,118 @@
+﻿@using POMQC.ViewModels.Filter;
+@using POMQC.ViewModels.Report;
+
+@model ReportViewModel
+@{
+    ViewBag.Title = "Report";
+    var factories = Model.Factories.Select(f => new SelectListItem { Text = f.FactoryName, Value = f.FactoryId.ToString() });    
+}
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="active"><a role="tab" data-toggle="tab" aria-expanded="true" href="#ReportByPO">DEFECTIVE BY PO</a></li>
+  <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#ReportByFactory">DEFECTIVE BY FACTORY</a></li>
+  <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#ReportAllFactories">DEFECTIVE FOR ALL FACTORIES</a></li>
+  <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#ReportFinal">PREFINAL AND FINAL</a></li>
+  <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#ReportDetail">ALL DETAILS</a></li>
+  <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#ReportWeekly">DHU WEEKLY</a></li>
+  <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#ReportMonthly">DHU MONTHLY</a></li>
+</ul>
+<div class="tab-content">
+    <div class="container tab-pane fade in active" id="ReportByPO">
+        @Html.Partial("Filter", Model.Filter)
+        @Html.Partial("_ReportBase", Model.ReportByPO)
+    </div>
+    <div class="container tab-pane fade" id="ReportByFactory">
+        <div class="header-filter">
+            <span>
+                <span class="b">FACTORY:</span> 
+                @Html.DropDownListFor(m => m.Factories, factories, new { @id = "ddlFACTORY", @onchange = "javascript:ChangeFactory(this);" })
+                <span class="b">FROM:</span>
+                @Html.Partial("DatePicker", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(-1), Function = FunctionViewModel.ReportByFactory })
+                <span class="b">TO:</span>
+                @Html.Partial("DatePicker", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(1), Function = FunctionViewModel.ReportByFactory })
+            </span>
+            <span>
+                <a href="javascript:ProcessViewFunction(15);" class="btn btn-primary" role="button">View</a>
+            </span>
+        </div>
+        @Html.Partial("_ReportBase", Model.ReportByFactory)
+    </div>
+    <div class="container tab-pane fade" id="ReportAllFactories">
+        <div class="header-filter">
+            <span>
+                <span class="b">FROM:</span>
+                @Html.Partial("_DatePicker", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(-1), Function = FunctionViewModel.ReportAllFactories })
+                <span class="b">TO:</span>
+                @Html.Partial("_DatePicker", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(1), Function = FunctionViewModel.ReportAllFactories })
+            </span>
+            <span>
+                <a href="javascript:ProcessViewFunction(19);" class="btn btn-primary" role="button">View</a>
+            </span>
+        </div>
+        @Html.Partial("_ReportBase2", Model.ReportAllFactories)
+    </div>
+    <div class="container tab-pane fade" id="ReportFinal">
+        <div class="header-filter">
+            <span>
+                <span class="b">FROM:</span>
+                @Html.Partial("_DatePicker3", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(-1), Function = FunctionViewModel.ReportFinal })
+                <span class="b">TO:</span>
+                @Html.Partial("_DatePicker3", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(1), Function = FunctionViewModel.ReportFinal })
+            </span>
+            <span>
+                <a href="javascript:ProcessViewFunction(20);" class="btn btn-primary" role="button">View</a>
+            </span>
+        </div>
+        @Html.Partial("_ReportFinal", Model.ReportFinalViewModel)
+    </div>
+    <div class="container tab-pane fade" id="ReportDetail">
+        <div class="header-filter">
+            <span>
+                <span class="b">FROM:</span>
+                @Html.Partial("_DatePicker4", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(-1), Function = FunctionViewModel.ReportDhuDetail })
+                <span class="b">TO:</span>
+                @Html.Partial("_DatePicker4", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(1), Function = FunctionViewModel.ReportDhuDetail })
+            </span>
+            <span>
+                <a href="javascript:ProcessViewFunction(21);" class="btn btn-primary" role="button">View</a>
+            </span>
+        </div>
+        @Html.Partial("_ReportDetail", Model.ReportDetailFactories)
+    </div>
+    <div class="container tab-pane fade" id="ReportWeekly" style="overflow: auto">
+        <div class="header-filter">
+            <span>
+                <span class="b">FROM:</span>
+                @Html.Partial("_DatePicker5", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(-1), Function = FunctionViewModel.ReportDhuWeekly })
+                <span class="b">TO:</span>
+                @Html.Partial("_DatePicker5", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(1), Function = FunctionViewModel.ReportDhuWeekly })
+            </span>
+            <span>
+                <a href="javascript:ProcessViewFunction(22);" class="btn btn-primary" role="button">View</a>
+            </span>
+        </div>
+        @Html.Partial("_ReportDHUWeekly", Model.ReportDHUWeekly)
+    </div>
+    <div class="container tab-pane fade" id="ReportMonthly">
+        <div class="header-filter">
+            <span>
+                <span class="b">FROM:</span>
+                @Html.Partial("_DatePicker6", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(-1), Function = FunctionViewModel.ReportDhuMonthly })
+                <span class="b">TO:</span>
+                @Html.Partial("_DatePicker6", new POMQC.ViewModels.Base.DatePickerViewModel { Date = DateTime.Now.AddMonths(1), Function = FunctionViewModel.ReportDhuMonthly })
+            </span>
+            <span>
+                <a href="javascript:ProcessViewFunction(23);" class="btn btn-primary" role="button">View</a>
+            </span>
+        </div>
+        @Html.Partial("_ReportDHUMonthly", Model.ReportDHUMonthly)
+    </div>
+</div>
+@section scripts{
+<script type="text/javascript">
+    $('#ddlFACTORY').select2();
+
+    function ChangeFactory(dropdown) {
+        ProcessViewFunction(Func.ReportByFactory);
+    }
+</script>
+}

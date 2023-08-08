@@ -1,0 +1,80 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.ViewModels.Filter;
+@{
+    Layout = null;
+    var url = string.Format("/report/getdhuweeklyexcel?from={0}&to={1}", DateTime.Now.AddMonths(-1).ToString("MM/dd/yyyy"), DateTime.Now.AddMonths(1).ToString("MM/dd/yyyy"));
+}
+@model DHUWeeklyReportViewModel
+<table id="report-dhu@((int)Model.Function)">
+    <thead>
+        <tr class="b c">
+            <td colspan="21"><div style="font-weight: bold; padding: 3px" id="report-title@((int)Model.Function)">@Html.Raw(Model.Title)</div></td>
+        </tr>
+        <tr class="b c">
+            <td>Factory</td>
+            <td>W1 Sample QTY</td>
+            <td>W1 Defected PCS QTY</td>
+            <td>W1 Defected PCS Percent</td>
+            <td>W1 Defected QTY</td>
+            <td>W1 Defected Percent</td>
+            <td>W2 Sample QTY</td>
+            <td>W2 Defected PCS QTY</td>
+            <td>W2 Defected PCS Percent</td>
+            <td>W2 Defected QTY</td>
+            <td>W2 Defected Percent</td>
+            <td>W3 Sample QTY</td>
+            <td>W3 Defected PCS QTY</td>
+            <td>W3 Defected PCS Percent</td>
+            <td>W3 Defected QTY</td>
+            <td>W3 Defected Percent</td>
+            <td>W4 Sample QTY</td>
+            <td>W4 Defected PCS QTY</td>
+            <td>W4 Defected PCS Percent</td>
+            <td>W4 Defected QTY</td>
+            <td>W4 Defected Percent</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ReportDHUWeekly.Any())
+        {
+            foreach (var item in Model.ReportDHUWeekly)
+            {
+        <tr class="r">
+            <td style="text-align:left">@item.FactoryName</td>
+
+            <td>@item.Week1.InspectionQty</td>            
+            <td>@item.Week1.ProductQty</td>
+            <td>@item.Week1.ProductPercent</td>
+            <td>@item.Week1.DefectQty</td>
+            <td>@item.Week1.DefectPercent</td>
+            
+            <td>@item.Week2.InspectionQty</td>            
+            <td>@item.Week2.ProductQty</td>
+            <td>@item.Week2.ProductPercent</td>
+            <td>@item.Week2.DefectQty</td>
+            <td>@item.Week2.DefectPercent</td>
+
+            <td>@item.Week3.InspectionQty</td>            
+            <td>@item.Week3.ProductQty</td>
+            <td>@item.Week3.ProductPercent</td>
+            <td>@item.Week3.DefectQty</td>
+            <td>@item.Week3.DefectPercent</td>
+
+            <td>@item.Week4.InspectionQty</td>            
+            <td>@item.Week4.ProductQty</td>
+            <td>@item.Week4.ProductPercent</td>
+            <td>@item.Week4.DefectQty</td>
+            <td>@item.Week4.DefectPercent</td>
+        </tr>
+            }
+        }
+        else
+        {
+        <tr>
+            <td colspan="21" class="c">There is no information</td>
+        </tr>        
+        }
+    </tbody>
+</table>
+<a style="margin-top: 10px" href="javascript:window.print();" class="btn btn-primary" role="button">Print</a>
+<a id="report-dhu" style="margin-top: 10px" target="_blank" href="@url" class="btn btn-primary" role="button">Export Excel</a>

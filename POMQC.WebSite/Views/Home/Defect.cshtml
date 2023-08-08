@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Defect";
+    var index = 1;
+}
+@model POMQC.ViewModels.Defect.DefectViewModel
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="active"><a role="tab" data-toggle="tab" aria-expanded="true" href="#Category">DEFECT CATEGORY</a></li>
+  <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Code">DEFECT DESCRIPTION</a></li>
+  <li role="presentation"><a role="tab" data-toggle="tab" aria-expanded="false" href="#Location">DEFECT LOCATION</a></li>
+</ul>
+<div class="tab-content">    
+    @Html.Partial("_Category", Model.Categories)
+    @Html.Partial("_Code", Model.Codes)
+    @Html.Partial("_Location", Model.Locations)
+</div>

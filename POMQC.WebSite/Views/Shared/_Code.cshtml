@@ -1,0 +1,54 @@
+﻿@{
+    var index = 1;
+}
+@model IList<POMQC.Entities.Defect.DefectCode>
+<div class="container tab-pane fade" id="Code">
+    <table>
+        <thead>
+            <tr>
+                <td colspan="9">DEFECT DESCRIPTION MANAGEMENT</td>
+                <td class="c"><a onclick="addDefectCode(0);" class="btn btn-primary" role="button">Add</a></td>
+            </tr>
+            <tr>
+                <td>No.</td>
+                <td>Defect Category</td>
+                <td>Defect Code</td>
+                <td>Defect Description</td>
+                <td>Mô tả Tiếng Việt</td>
+                <td>Type</td>
+                <td>Created By</td>
+                <td>Updated By</td>
+                <td>Active</td>
+                <td>Edit</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                index = 1;
+                foreach (var code in Model)
+                {                
+            <tr>
+                <td class="c">@index</td>
+                <td>@code.CatName</td>
+                <td>@code.DefCode</td>
+                <td>@code.DefName</td>
+                <td>@code.DefVN</td>
+                <td class="c">@code.Type</td>
+                <td>@code.CreatedUser</td>
+                <td>@code.UpdatedUser</td>
+                <td class="c"><input type="checkbox" @(code.Active ? "checked" : string.Empty) disabled /></td>
+                <td class="c"><a onclick="addDefectCode(@code.DefId);" class="btn btn-primary" role="button">Edit</a></td>
+            </tr>        
+                    ++index;
+                }        
+            }
+            else
+            {
+            <tr>
+                <td class="c" colspan="10">There is no information</td>
+            </tr>        
+            }
+        </tbody>
+    </table>
+</div>

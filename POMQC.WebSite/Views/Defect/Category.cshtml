@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Defect Category";
+    Layout = null;
+}
+@model POMQC.Entities.Defect.DefectCategory
+<style>
+    tr:hover
+    {
+	    background-color: #fff !important;
+	    border: none !important;
+    }
+</style>
+<div>
+    <div id="errmsg" style="display: none"></div>
+    <input type="hidden" id="catid" value="@Model.CatId" />
+    <table class="normal-table">
+        <tr>
+            <td class="r">Category Name</td>
+            <td>@Html.TextBoxFor(m => m.CatName, new { style = "width: 200px" })</td>
+        </tr>
+        <tr>
+            <td class="r">Active</td>
+            <td>@Html.CheckBoxFor(m => m.Active)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button" class="btn btn-primary" role="button" onclick="addCategory()" value="Submit" /></td>
+        </tr>
+    </table>
+</div>

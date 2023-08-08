@@ -1,0 +1,49 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.ViewModels.Filter;
+@{
+    Layout = null;
+}
+@model DHUMonthlyReportViewModel
+<table border="1">
+    <thead>
+        <tr>
+            <td colspan="9"><div style="text-align:center;font-weight: bold;">@Html.Raw(Model.Title)</div></td>
+        </tr>
+        <tr style="text-align:center;font-weight: bold;">
+            <td>Factory</td>
+            <td>Year</td>
+            <td>Month</td>
+            <td>Output QTY</td>
+            <td>Inspection QTY</td>
+            <td>Product QTY</td>
+            <td>Product Percent</td>
+            <td>Defected QTY</td>
+            <td>Defected Percent</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ReportDHUMonthly.Any())
+        {
+            foreach (var item in Model.ReportDHUMonthly)
+            {
+        <tr>
+            <td>@item.FactoryName</td>
+            <td>@item.Year</td>
+            <td>@item.Month</td>
+            <td>@item.OutputQty</td>            
+            <td>@item.InspectionQty</td>
+            <td>@item.ProductQty</td>
+            <td>@item.ProductPercent</td>
+            <td>@item.DefectQty</td>            
+            <td>@item.DefectPercent</td>
+        </tr>
+            }
+        }
+        else
+        {
+        <tr>
+            <td colspan="9" style="text-align:center">There is no information</td>
+        </tr>        
+        }
+    </tbody>
+</table>

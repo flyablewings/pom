@@ -1,0 +1,108 @@
+﻿@using POMQC.ViewModels.Base;
+@{
+    Layout = null;
+    var firstPO = Model.Items.FirstOrDefault() ?? new POMQC.Entities.Defect.DefectDetail();
+    var url = string.Format("/report/getbycustpoexcel?custid={0}&custpo={1}&aiglpo={2}&custname={3}", firstPO.CustId, firstPO.CustPO, firstPO.AIGLPO, firstPO.CustName);
+}
+@model ReportViewModelBase
+<div class="container tab-pane fade" id="@Model.Function">
+    <table id="report-po@((int)Model.Function)">
+        <thead>
+            <tr class="b c">
+                <td colspan="5"><div style="font-weight: bold; padding: 3px" id="report-title@((int)Model.Function)">@Html.Raw(Model.Title)</div></td>
+            </tr>
+            <tr class="b c">
+                <td rowspan="4" style="width: 80px">DEFECT NO</td>
+                <td colspan="3">MATERIAL</td>
+                <td rowspan="4" style="width: 80px">QTY</td>
+            </tr>
+            <tr class="b c">
+                <td colspan="3">DEFECT DESCRIPTION</td>
+            </tr>
+            <tr class="b c">
+                <td colspan="3">DEFECT LOCATION</td>
+            </tr>
+            <tr class="b c">
+                <td colspan="3">DEFECT TYPE</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items.Any())
+            {
+                <tr>
+                    <td colspan="5">&nbsp;</td>
+                </tr>
+                var groups = Model.Items.GroupBy(m => m.DHUType);
+                foreach (var item in groups)
+                {
+                    var index = 1;
+            <tr class="b sub-header-row-bg">
+                <td></td>
+                <td colspan="3">@item.First().DHUType.ToString().ToUpperInvariant()</td>
+                <td class="b c">@item.Sum(i => i.Total)</td>
+            </tr>        
+                    foreach (var defect in item)
+                    {
+            <tr>
+                <td class="c">@index</td>
+                <td>@defect.DefName</td>
+                <td>@defect.LocName</td>
+                <td>@defect.Type.ToString()</td>
+                <td class="c">@defect.Total</td>
+            </tr>        ++index;
+                    }
+            <tr>
+                <td colspan="5">&nbsp;</td>
+            </tr>        
+                }
+            }
+            else
+            {
+            <tr>
+                <td colspan="5" class="c">There is no information</td>
+            </tr>        
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="b r" colspan="4">TOTAL</td>
+                <td class="b c" id="report-grand-total@((int)Model.Function)">@Model.Items.Sum(i => i.Total)</td>
+            </tr>
+        </tfoot>
+    </table>
+    <a style="margin-top: 10px" href="javascript:window.print();" class="btn btn-primary" role="button">Print</a>
+    <a id="report-cust-fact-@((int)Model.Function)" style="margin-top: 10px" target="_blank" href="@url" class="btn btn-primary" role="button">Export Excel</a>
+    <script type="text/javascript">
+        setTimeout(function() {
+            $(document).ready(function () {
+                var custId = '0';
+                var custPO = '0';
+                var aiglPO = '0';
+                var custName = '';
+                var tr = $('#main .selected-row');
+
+                if (tr && tr[0] && tr[0].cells) {
+                    custName = tr[0].cells[2].innerText;
+                    var options = model.Customers;
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].CustName == custName) {
+                            custId = options[i].CustId;
+                            break;
+                        }
+                    }
+
+                    custPO = tr[0].cells[1].innerText;
+                    aiglPO = tr[0].cells[0].innerText;
+                }
+
+                custId = custId != '0' ? custId : $("#ddlCUST").val();
+                custPO = custPO != '0' ? custPO : $("#ddlCUSTPO").val();
+                aiglPO = aiglPO != '0' ? aiglPO : $("#ddlAIGLPO").val();
+                custName = custName != '' && custName != 'All' ? custName : $("#ddlCUST option:selected").text();
+
+                var action = 'getbycustpoexcel?custid=' + custId + '&custpo=' + custPO + '&aiglpo=' + aiglPO + '&custname=' + custName;
+                $('#report-cust-fact-' + @((int)Model.Function)).prop('href', '/report/' + action);
+            });
+        }, 2000);
+    </script>
+</div>

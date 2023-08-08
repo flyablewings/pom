@@ -1,0 +1,228 @@
+﻿@using POMQC.ViewModels.Checklist;
+@{
+    Layout = null;
+    var isSample = Model.Function == ChecklistFunctionViewModel.FitSample
+        || Model.Function == ChecklistFunctionViewModel.PPSample 
+        || Model.Function == ChecklistFunctionViewModel.TopSample;
+}
+@model ChecklistViewModel
+<div class="container tab-pane fade @(Model.IsActiveTab ? "in active" : string.Empty)" id="@Model.Function">
+    <div class="dashboard-tbl">
+        <table id="checklist@((int)Model.Function)">
+            <thead>
+                <tr>
+                    <td>Created Date</td>
+                    <td>Created By</td>
+                    <td>Updated Date</td>
+                    <td>Updated By</td>
+                </tr>
+            </thead>
+            <tbody style="cursor: pointer">
+                @if (string.IsNullOrWhiteSpace(Model.Comment))
+                {
+                <tr>
+                    <td colspan="4" class="c">There is no information</td>
+                </tr>    
+                }
+                else
+                {
+                <tr>
+                    <td>@Model.CreateDate</td>
+                    <td>@Model.CreatedUser</td>
+                    <td>@(Model.UpdatedDate == System.DateTime.MinValue ? "--" : Model.UpdateDate)</td>
+                    <td>@(string.IsNullOrWhiteSpace(Model.UpdatedUser) ? "--" : Model.UpdatedUser)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="content-main">
+        <input type="hidden" id="isUpdate@((int)Model.Function)" value="@(Model.CustId > 0 ? 1 : 0)" />
+        <div id="errmsg@((int)Model.Function)" style="display: none"></div>
+        <div>@Model.Title</div>
+        <div style="max-height: 244px; overflow: auto">
+            <form style="border: 1px solid #ccc; height:auto" action="@(isSample ? Url.Content("~/checklist/sample") : Url.Content("~/checklist/upload"))" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm@((int)Model.Function)">
+                <div class="fallback">
+                    <input name="img@((int)Model.Function)" type="file" multiple />            
+                </div>    
+            </form>   
+        </div>
+    </div>
+    <div class="content-nested ">
+        <div>COMMENTS</div>
+        <div><textarea id="comment@((int)Model.Function)" style="width: 100%" rows="2">@Model.Comment</textarea></div>
+    </div>
+    <div style="margin-top: 10px"><a href="javascript:;" class="btn btn-primary" role="button" id="submit@((int)Model.Function)">Save</a></div>
+</div>
+<script type="text/javascript">
+    //File Upload response from the server
+    Dropzone.options.dropzoneForm@((int)Model.Function) = {
+        autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 100,
+        maxFiles: 100,
+        acceptedFiles: AcceptedFileTypes,
+        maxFilesize: 500,
+
+        init: function () {
+            this.on("success", function (data) {
+                if (data.xhr.status == 500) {
+                    showMessage(@((int)Model.Function), 'An error occurs, please check network connection, file types or try again later.', true);
+                }
+                else{
+                    var result = JSON.parse(data.xhr.responseText);
+                    showMessage(@((int)Model.Function), result.Message, !result.IsSuccess);
+                }
+
+                if ($('#isUpdate@((int)Model.Function)').val() == '0') {
+                    ProcessNewFunction(@((int)Model.Function));
+                }                
+                else {
+                    unblockUI();
+                }
+            });
+
+            this.on("error", function (data) {
+                showMessage(@((int)Model.Function), 'An error occurs, please check network connection, file types or try again later.', true);
+                ProcessNewFunction(@((int)Model.Function));
+            });
+
+            var submitButton = document.querySelector("#submit@((int)Model.Function)");
+            var wrapperThis = this;
+
+            submitButton.addEventListener("click", function () {
+                if (wrapperThis.files.length == 0 && $('#isUpdate@((int)Model.Function)').val() == '0') {
+                    showMessage(@((int)Model.Function), 'Please choose file to upload.', true);
+                }
+                else if ($("#comment@((int)Model.Function)").val().trim() == '') {
+                    showMessage(@((int)Model.Function), 'Please input comments.', true);
+                    $("#comment@((int)Model.Function)").focus();
+                }
+                else if (wrapperThis.getQueuedFiles().length > 0) {
+                    wrapperThis.processQueue();
+                }
+                else {
+                    // Upload anyway without files
+                    wrapperThis.uploadFiles([{name:'nofiles'}]);
+                }
+            });
+
+            this.on("addedfile", function (file) {
+
+                // Create the remove button
+                var removeButton = Dropzone.createElement("<button class='btn btn-xs btn-warning' style='width: 120px; cursor: pointer'>Delete</button>");
+
+                // Listen to the click event
+                removeButton.addEventListener("click", function (e) {
+                    // Make sure the button click doesn't submit the form:
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var custId = '0';
+                    var custPO = '0';
+                    var aiglPO = '0';
+                    var custName = '';
+                    var tr = $('#main .selected-row');
+
+                    if (tr && tr[0] && tr[0].cells) {
+                        custName = tr[0].cells[2].innerText;
+                        var options = model.Customers;
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].CustName == custName) {
+                                custId = options[i].CustId;
+                                break;
+                            }
+                        }
+
+                        custPO = tr[0].cells[1].innerText;
+                        aiglPO = tr[0].cells[0].innerText;
+                    }
+
+                    custId = custId != '0' ? custId : $("#ddlCUST").val();
+                    custPO = custPO != '0' ? custPO : $("#ddlCUSTPO").val();
+                    aiglPO = aiglPO != '0' ? aiglPO : $("#ddlAIGLPO").val();
+
+                    // If you want to the delete the file on the server as well,
+                    // you can do the AJAX request here.
+                    if (confirm('File will be deleted on server, cannot rollback, are you sure?')) {
+                        $.ajax({
+                            url: resolveClientUrl('checklist/delete'),
+                            type: 'post',
+                            data: {
+                                custid: custId,    
+                                custpo: custPO,
+                                aiglpo: aiglPO,                            
+                                doc: file.name,
+                                type: @((int)Model.Function)
+                            },
+                            dataType: 'application/json'
+                        }).complete(function (result) {      
+                            var res = $.parseJSON(result.responseText);
+                            if(res && !res.IsSuccess){
+                                alert(res.Message);
+                            }
+                            else {
+                                // Remove the file preview.
+                                wrapperThis.removeFile(file);
+                            }
+                        });
+                    }
+                });
+
+                // Add the button to the file preview element.
+                file.previewElement.appendChild(removeButton);
+            });
+
+            // Send all form and input data below to server
+            this.on('sendingmultiple', function (data, xhr, formData) {
+                blockUI();
+                var tr = $('.selected-row');
+                var custId = 0;
+                var custPO = '';
+                var aiglPO = '';
+
+                if (tr && tr[0] && tr[0].cells) {
+                    var custName = tr[0].cells[2].innerText;
+                    var options = model.Customers;
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].CustName == custName) {
+                            custId = options[i].CustId;
+                            break;
+                        }
+                    }
+
+                    custPO = tr[0].cells[1].innerText;
+                    aiglPO = tr[0].cells[0].innerText;
+                }
+
+                formData.append("IsUpdate", $("#isUpdate@((int)Model.Function)").val() == '1');
+                formData.append("CustId", $("#ddlCUST").val() != '0' ? $("#ddlCUST").val() : custId);
+                formData.append("CustPO", $("#ddlCUSTPO").val() != '0' ? $("#ddlCUSTPO").val() : custPO);
+                formData.append("AIGLPO", $("#ddlAIGLPO").val() != "0" ? $("#ddlAIGLPO").val() : aiglPO);
+                formData.append("Comment", $("#comment@((int)Model.Function)").val());
+                formData.append("Function", @((int)Model.Function));
+            });
+        }
+    };
+
+    var mockFiles@((int)Model.Function) = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DroppedFiles));
+    $(document).ready(function(){
+        setTimeout(function(){
+            var dropzone = Dropzone.forElement('#dropzoneForm@((int)Model.Function)');
+            for (var i = 0; i < mockFiles@((int)Model.Function).length; i++) {
+                if (mockFiles@((int)Model.Function)[i].hasImage) {
+                    // Create the mock file:
+                    var mockFile = mockFiles@((int)Model.Function)[i];
+
+                    // Call the default addedfile event handler
+                    dropzone.emit("addedfile", mockFile);
+
+                    // And optionally show the thumbnail of the file:
+                    dropzone.emit("thumbnail", mockFile, mockFile.url);
+
+                    dropzone.files.push(mockFile);
+                }                
+            }            
+        }, 200);
+    });
+</script>

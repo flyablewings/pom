@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+  <Function Name="Filter">
+    <Setting Key="sp_Customer_SelectAll" SpName="sp_Customer_SelectAll" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Factory_SelectAll" SpName="sp_Factory_SelectAll" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_AIGLPO_SelectAll" SpName="sp_AIGLPO_SelectAll" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_CustPO_SelectAll" SpName="sp_CustPO_SelectAll" DbName="POMQC" Plain="1" />
+  </Function>
+  <Function Name="Checklist">
+    <Setting Key="sp_Checklist_Insert" SpName="sp_Checklist_Insert" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Checklist_Update" SpName="sp_Checklist_Update" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Checklist_SelectByCustPO" SpName="sp_Checklist_SelectByCustPO" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Checklist_DeleteImg" SpName="sp_Checklist_DeleteImg" DbName="POMQC" Plain="1" />
+  </Function>
+  <Function Name="Dashboard">
+    <Setting Key="sp_PO_SelectByCustPO" SpName="sp_PO_SelectByCustPO" DbName="POMQC" Plain="1" />
+  </Function>
+  <Function Name="DHU">
+    <Setting Key="sp_DHU_Insert" SpName="sp_DHU_Insert" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DHU_Update" SpName="sp_DHU_Update" DbName="POMQC" Plain="1" />    
+    <Setting Key="sp_DHU_SelectByCustPO" SpName="sp_DHU_SelectByCustPO" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DHU_DeleteImg" SpName="sp_DHU_DeleteImg" DbName="POMQC" Plain="1" />
+  </Function>
+  <Function Name="Final">
+    <Setting Key="sp_Final_Insert" SpName="sp_Final_Insert" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Final_Update" SpName="sp_Final_Update" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Final_SelectByCustPO" SpName="sp_Final_SelectByCustPO" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Final_SelectAllPO" SpName="sp_Final_SelectAllPO" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Final_DeleteImg" SpName="sp_Final_DeleteImg" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_FinalDetail_Insert" SpName="sp_FinalDetail_Insert" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_FinalDetail_Update" SpName="sp_FinalDetail_Update" DbName="POMQC" Plain="1" />        
+  </Function>
+  <Function Name="Defect">    
+    <Setting Key="sp_DefectCategory_SelectAll" SpName="sp_DefectCategory_SelectAll" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectCategory_Insert" SpName="sp_DefectCategory_Insert" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectCategory_Update" SpName="sp_DefectCategory_Update" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectCode_SelectAll" SpName="sp_DefectCode_SelectAll" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectCode_Insert" SpName="sp_DefectCode_Insert" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectCode_Update" SpName="sp_DefectCode_Update" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectLocation_SelectAll" SpName="sp_DefectLocation_SelectAll" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectLocation_Insert" SpName="sp_DefectLocation_Insert" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectLocation_Update" SpName="sp_DefectLocation_Update" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectDetail_SelectByCustPO" SpName="sp_DefectDetail_SelectByCustPO" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectDetail_Insert" SpName="sp_DefectDetail_Insert" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_DefectDetail_Update" SpName="sp_DefectDetail_Update" DbName="POMQC" Plain="1" />    
+  </Function>
+  <Function Name="Report">
+    <Setting Key="sp_Report_SelectByCustPO" SpName="sp_Report_SelectByCustPO" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Report_SelectByFactory" SpName="sp_Report_SelectByFactory" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Report_SelectAllFactories" SpName="sp_Report_SelectAllFactories" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Report_SelectAllFinal" SpName="sp_Report_SelectAllFinal" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Report_Detail" SpName="sp_Report_Detail" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Report_DHU_Weekly" SpName="sp_Report_DHU_Weekly" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_Report_DHU_Monthly" SpName="sp_Report_DHU_Monthly" DbName="POMQC" Plain="1" />    
+  </Function>
+  <Function Name="Login">
+    <Setting Key="sp_User_Login" SpName="sp_User_Login" DbName="POMQC" Plain="1" />
+    <Setting Key="sp_User_Email" SpName="sp_User_Email" DbName="POMQC" Plain="1" />    
+  </Function>  
+</Functions>

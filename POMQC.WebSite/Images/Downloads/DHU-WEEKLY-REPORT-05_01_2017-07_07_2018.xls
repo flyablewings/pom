@@ -1,0 +1,79 @@
+
+<table id="report-dhu0" border="1">
+    <thead>
+        <tr class="b c">
+            <td colspan="21"><div style="font-weight: bold; padding: 3px; text-align: center" id="report-title0">DHU WEEKLY REPORT<br />From: 05/01/2017, To: 07/07/2018</div></td>
+        </tr>
+        <tr style="font-weight: bold; text-align: center">
+            <td>Factory</td>
+            <td>W1 Sample QTY</td>
+            <td>W1 Defected PCS QTY</td>
+            <td>W1 Defected PCS Percent</td>
+            <td>W1 Defected QTY</td>
+            <td>W1 Defected Percent</td>
+            <td>W2 Sample QTY</td>
+            <td>W2 Defected PCS QTY</td>
+            <td>W2 Defected PCS Percent</td>
+            <td>W2 Defected QTY</td>
+            <td>W2 Defected Percent</td>
+            <td>W3 Sample QTY</td>
+            <td>W3 Defected PCS QTY</td>
+            <td>W3 Defected PCS Percent</td>
+            <td>W3 Defected QTY</td>
+            <td>W3 Defected Percent</td>
+            <td>W4 Sample QTY</td>
+            <td>W4 Defected PCS QTY</td>
+            <td>W4 Defected PCS Percent</td>
+            <td>W4 Defected QTY</td>
+            <td>W4 Defected Percent</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>MARCH 29</td>
+            <td>0</td>            
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>            
+            <td>0</td>            
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>            
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>307</td>            
+            <td>1689</td>
+            <td>550</td>
+            <td>78</td>
+            <td>25</td>
+        </tr>
+        <tr>
+            <td>HOA THO</td>
+            <td>0</td>            
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>            
+            <td>0</td>            
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>            
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>30</td>            
+            <td>60</td>
+            <td>200</td>
+            <td>6</td>
+            <td>20</td>
+        </tr>
+    </tbody>
+</table>

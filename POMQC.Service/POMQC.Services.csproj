@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D8118130-C0EC-4D21-BE42-371E96D40033}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>POMQC.Services</RootNamespace>
+    <AssemblyName>POMQC.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Fos.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\POMQC.Data\Libs\Fos.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\ILoginService.cs" />
+    <Compile Include="Account\LoginService.cs" />
+    <Compile Include="Base\ServiceBase.cs" />
+    <Compile Include="Checklist\ChecklistService.cs" />
+    <Compile Include="Checklist\IChecklistService.cs" />
+    <Compile Include="Dashboard\DashboardService.cs" />
+    <Compile Include="Dashboard\IDashboardService.cs" />
+    <Compile Include="Defect\DefectService.cs" />
+    <Compile Include="Defect\IDefectService.cs" />
+    <Compile Include="DHU\DHUService.cs" />
+    <Compile Include="DHU\IDHUService.cs" />
+    <Compile Include="Filter\FilterService.cs" />
+    <Compile Include="Filter\IFilterService.cs" />
+    <Compile Include="Final\FinalService.cs" />
+    <Compile Include="Final\IFinalService.cs" />
+    <Compile Include="Inspection\IInspectionService.cs" />
+    <Compile Include="Inspection\InspectionService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\IReportService.cs" />
+    <Compile Include="Report\ReportService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\POMQC.Data\POMQC.Data.csproj">
+      <Project>{DBD0CD45-2309-486B-967E-F04983E4EE4C}</Project>
+      <Name>POMQC.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POMQC.Entity\POMQC.Entities.csproj">
+      <Project>{2052A72B-2029-40CE-82CE-0ABD1E3F52B2}</Project>
+      <Name>POMQC.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POMQC.Utilities\POMQC.Utilities.csproj">
+      <Project>{3E742260-F8FC-427D-AC21-A9511986CB66}</Project>
+      <Name>POMQC.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\POMQC.ViewModel\POMQC.ViewModels.csproj">
+      <Project>{A13DD464-DC76-438F-92AE-1EE89FC4B0BD}</Project>
+      <Name>POMQC.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,61 @@
+﻿@model POMQC.ViewModels.Account.LoginViewModel
+@{
+    Layout = null;
+}
+<html>
+    <head>
+        <title>AURORA POM - LOGIN</title>
+        <style>
+            input[type="text"], input[type="password"], input[type="submit"] { height: 26px; cursor: pointer; text-indent: 3px }
+            label, input[type="checkbox"] { cursor: pointer }
+            .submit { background-color: #5fbb54; height: 26px; width: 106px; color: #ffff00;}
+        </style>
+    </head>
+    <body>
+        <center style="margin-top: 150px">
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+        {
+            <table style="border: 1px solid #ccc" cellpadding="5" cellspacing="10">
+                <tr>
+                    <td colspan="2"><img src="@Url.Content("~/Images/logo.png")" alt="AURORA" /></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Login.Username)</td>
+                    <td>@Html.TextBoxFor(m => m.Login.Username, new { autocomplete = "off" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Login.Password)</td>
+                    <td>@Html.PasswordFor(m => m.Login.Password, new { autocomplete = "off" })</td>
+                </tr>
+                <tr>
+                    <td><input type="hidden" name="ReturnUrl" id="ReturnUrl" value="@(Request.QueryString["ReturnUrl"] ?? "/")" /></td>
+                    <td>
+                        <label>
+                            <input type="checkbox" onchange="showPassword(this);" />Show password
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Login" class="submit" />
+                    </td>
+                </tr>
+                <tr style="display: @(string.IsNullOrEmpty(Model.ErrorMessage) ? "none" : string.Empty)">
+                    <td colspan="2" style="color: #ff0000; text-align: center">@Model.ErrorMessage</td>
+                </tr>
+            </table>
+        }
+        </center>
+        <script type="text/javascript">
+            function showPassword(checkbox) {
+                if (checkbox.checked) {
+                    document.getElementById('Login_Password').setAttribute('type', 'text');
+                }
+                else {
+                    document.getElementById('Login_Password').setAttribute('type', 'password');
+                }
+            }
+        </script>
+    </body>
+</html>

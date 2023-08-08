@@ -1,0 +1,52 @@
+﻿@using POMQC.ViewModels.Base;
+@using POMQC.ViewModels.Filter;
+@{
+    Layout = null;
+    var url = string.Format("/report/getdhumonthlyexcel?from={0}&to={1}", DateTime.Now.AddMonths(-1).ToString("MM/dd/yyyy"), DateTime.Now.AddMonths(1).ToString("MM/dd/yyyy"));
+}
+@model DHUMonthlyReportViewModel
+<table id="report-dhu@((int)Model.Function)">
+    <thead>
+        <tr class="b c">
+            <td colspan="9"><div style="font-weight: bold; padding: 3px" id="report-title@((int)Model.Function)">@Html.Raw(Model.Title)</div></td>
+        </tr>
+        <tr class="b c">
+            <td>Factory</td>
+            <td>Year</td>
+            <td>Month</td>
+            <td>Output QTY</td>
+            <td>Inspection QTY</td>
+            <td>Product QTY</td>
+            <td>Product Percent</td>
+            <td>Defected QTY</td>
+            <td>Defected Percent</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ReportDHUMonthly.Any())
+        {
+            foreach (var item in Model.ReportDHUMonthly)
+            {
+        <tr class="r">
+            <td style="text-align:left">@item.FactoryName</td>
+            <td>@item.Year</td>
+            <td>@item.Month</td>
+            <td>@item.OutputQty</td>            
+            <td>@item.InspectionQty</td>
+            <td>@item.ProductQty</td>
+            <td>@item.ProductPercent</td>
+            <td>@item.DefectQty</td>            
+            <td>@item.DefectPercent</td>
+        </tr>
+            }
+        }
+        else
+        {
+        <tr>
+            <td colspan="9" class="c">There is no information</td>
+        </tr>        
+        }
+    </tbody>
+</table>
+<a style="margin-top: 10px" href="javascript:window.print();" class="btn btn-primary" role="button">Print</a>
+<a id="report-dhu-monthly" style="margin-top: 10px" target="_blank" href="@url" class="btn btn-primary" role="button">Export Excel</a>

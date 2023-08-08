@@ -1,0 +1,19 @@
+﻿@model POMQC.ViewModels.Base.DatePickerViewModel
+@{
+    DateTime date = Model.Date == null || Model.Date == DateTime.MinValue ? DateTime.Now : Model.Date;
+}
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker5").datepicker({
+            dateFormat: "mm/dd/yy",
+            changeMonth: true,
+            changeYear: true,
+            minDate: new Date(1900, 1 - 1, 1),
+            maxDate: new Date(((new Date().getFullYear()) + 1), 11, 31),
+            onSelect: function (dateText, inst) {
+                ProcessViewFunction(@((int)Model.Function));
+            }
+        });
+    });
+</script>
+<input type="text" class="datepicker5" value="@date.ToString("MM/dd/yyyy")" readonly="readonly" />
