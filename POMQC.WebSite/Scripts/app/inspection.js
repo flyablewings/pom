@@ -487,7 +487,11 @@ function loadDHUDefect(defects, func) {
         }
 
         if (defects.length == 0) {
-            loadDefectValues(func, 0, 0, 10, 1, 0, 0);           
+            loadDefectValues(func, 0, 0, 10, 1, 0, 0);
+            $('#po-qty' + func).val(100);
+            $('#output-qty' + func).val(100);
+            $('#audit-size' + func).val(10);
+            $('#country' + func).val('Vietnam');
         }
         else {
             for (var i = 0; i < defects.length; i++) {
@@ -799,7 +803,7 @@ function changeDefectFinal(select, func, rowIndex) {
 }
 
 function initDefectCode(func, selectedValue, rowIndex) {
-    var result = '<select id="def_' + (func + '_' + rowIndex) + '" onchange="changeDefectCode(this, ' + func + ', ' + rowIndex + ')" style="width: 550px" name="codes' + func + '">';
+    var result = '<select id="def_' + (func + '_' + rowIndex) + '" onchange="changeDefectCode(this, ' + func + ', ' + rowIndex + ')" style="width: 200px" name="codes' + func + '">';
     for (var i = 0; i < defectCodes.length; i++) {
         var codes = defectCodes[i];
         if (codes[0].CatName != null) {
@@ -822,7 +826,7 @@ function initDefectCode(func, selectedValue, rowIndex) {
 
 function initDefectFinal(func, rowIndex, selectedValue) {
     try {
-        var result = '<select id="def_' + (func + '_' + rowIndex) + '" onchange="changeDefectFinal(this, ' + func + ', ' + rowIndex + ')" style="width: 700px" name="codes' + func + '">';
+        var result = '<select id="def_' + (func + '_' + rowIndex) + '" onchange="changeDefectFinal(this, ' + func + ', ' + rowIndex + ')" style="width: 250px" name="codes' + func + '">';
         for (var i = 0; i < defectCodes.length; i++) {
             var codes = defectCodes[i];
             if (codes[0].CatName != null) {
@@ -861,7 +865,7 @@ function initDefectMajorMinor(func, type, rowIndex, defects) {
 
 function initDefectLocation(func, selectedValue, rowIndex) {
     try {
-        var result = '<select id="loc_' + (func + '_' + rowIndex) + '" style="width: 100%" name="locations' + func + '">';
+        var result = '<select id="loc_' + (func + '_' + rowIndex) + '" style="width: 95%" name="locations' + func + '">';
         for (var i = 0; i < defectLocations.length; i++) {
             var selected = selectedValue == defectLocations[i].LocId ? 'selected' : '';
             result += '<option ' + selected + ' value="' + defectLocations[i].LocId + '">' + defectLocations[i].LocName + '</option>';
@@ -873,13 +877,13 @@ function initDefectLocation(func, selectedValue, rowIndex) {
 }
 
 function initPCSQty(func, value) {
-    var result = '<input type="text" class="r" value="' + (value || 10) + '" name="pcs' + func + '" style="width: 100%" />';
+    var result = '<input type="text" class="r" value="' + (value || 10) + '" name="pcs' + func + '" style="width: 95%" />';
 
     return result;
 }
 
 function initDefectQty(func, value) {
-    var result = '<input type="text" class="r" value="' + (value || 1) + '" name="defect' + func + '" style="width: 100%" />';
+    var result = '<input type="text" class="r" value="' + (value || 1) + '" name="defect' + func + '" style="width: 95%" />';
 
     return result;
 }

@@ -4,7 +4,7 @@
 @{
     Layout = null;
     var count = 0;
-    string shirt = "", pant = "", _short = "", coatJacket = "", woven = "", knit = "", skort = "", skirt = "";
+    string shirt = "", pant = "", _short = "", coatJacket = "", woven = "", knit = "";
     var defectColumns = Model.DefectCodeMultiColumns;
     if (Model.Item.DHUId > 0)
     {
@@ -102,8 +102,6 @@
                         <option value="2" @pant>Pant</option>
                         <option value="3" @_short>Short</option>
                         <option value="4" @coatJacket>Coat/Jacket</option>
-                        <option value="5" @skort>Skort</option>
-                        <option value="6" @skirt>Skirt</option>
                     </select>
                 </td>
                 <td>
@@ -127,13 +125,13 @@
                 <td class="b">Customer PO</td>
                 <td id="custPO@((int)Model.Function)">@Model.Item.CustPO</td>
                 <td class="b">PO Quantity</td>
-                <td><input type="text" style="width: 95%" id="po-qty@((int)Model.Function)" value="@(Model.Item.POQty == 0 ? 0 : Model.Item.POQty)" /></td>
+                <td><input type="text" style="width: 95%" id="po-qty@((int)Model.Function)" value="@(Model.Item.POQty == 0 ? 100 : Model.Item.POQty)" /></td>
             </tr>
             <tr>
                 <td class="b">Customer Name</td>
                 <td id="custName@((int)Model.Function)">@Model.Item.CustName</td>
                 <td class="b">Output Quantity</td>
-                <td><input type="text" style="width: 95%" id="output-qty@((int)Model.Function)" value="@(Model.Item.OutputQty == 0 ? 0 : Model.Item.OutputQty)" /></td>
+                <td><input type="text" style="width: 95%" id="output-qty@((int)Model.Function)" value="@(Model.Item.OutputQty == 0 ? 100 : Model.Item.OutputQty)" /></td>
             </tr>
             <tr>
                 <td class="b">Style</td>
@@ -168,17 +166,17 @@
         <table id="tbl-dhu@((int)Model.Function)">
             <thead>
                 <tr class="header-row-bg">
-                    <td colspan="2" style="width: 50%" class="b c">DEFECTS LIST</td>
-                    <td colspan="3" style="width: 50%" class="b c">NUMBER OF DEFECTIVE UNITS</td>
+                    <td colspan="2" class="b c">DEFECTS LIST</td>
+                    <td colspan="3" class="b c">NUMBER OF DEFECTIVE UNITS</td>
                 </tr>
             </thead>
             <tbody>
                 <tr class="sub-header-row-bg">
-                    <td style="width: 200px" class="b c">DEFECT DESCRIPTION</td>
-                    <td style="width: 100px" class="b c">DEFECT LOCATION</td>
-                    <td style="width: 15%" class="b c">DEFECT PCS QTY</td>
-                    <td style="width: 15%" class="b c">Counting Space</td>
-                    <td style="width: 10%" class="b c">Total</td>
+                    <td style="width: 20%" class="b c">DEFECT DESCRIPTION</td>
+                    <td style="width: 20%" class="b c">DEFECT LOCATION</td>
+                    <td style="width: 20%" class="b c">DEFECT PCS QTY</td>
+                    <td style="width: 20%" class="b c">Counting Space</td>
+                    <td class="b c">Total</td>
                 </tr>
                 @if (Model.Defects.Any())
                 {
@@ -238,7 +236,7 @@
                             }
                         </select>
                     </td>
-                    <td><input class="r" value="1" name="pcs@((int)Model.Function)" type="text" style="width: 95%" /></td>
+                    <td><input class="r" value="10" name="pcs@((int)Model.Function)" type="text" style="width: 95%" /></td>
                     <td><input class="r" value="1" name="defect@((int)Model.Function)" type="text" style="width: 95%" /></td>
                     <td class="r">1</td>
                 </tr>
@@ -362,7 +360,6 @@
                 var total = getDefectTotal(@((int)Model.Function)).split(',');
                 var pcsOK = true;
                 var totalOK = true;
-				var totalValid = true;
 
                 var tr = $('.selected-row');
 
@@ -397,13 +394,6 @@
                         break;
                     }
                 }
-				
-				for (var i = 0; i < total.length; i++) {
-                    if (parseInt(pcs[i]) > parseInt(total[i])) {
-                        totalValid = false;
-                        break;
-                    }
-                }
 
                 if ($("#dhuid@((int)Model.Function)").val() == '0' && (custId == '0' || custPO == '0' || aiglPO == '0')) {
                     showMessage(2@((int)Model.Function), 'Please select Customer, Customer PO and AIGL PO.', true);
@@ -429,9 +419,6 @@
                     (codes.split(',') == '' && locations.split(',') != '')) {
                     showMessage(2@((int)Model.Function), 'Please select defect and location.', true);
                 }
-				else if (!totalValid){
-					showMessage(2@((int)Model.Function), 'Counting Space must be greater than or equal to DEFECT PCS QTY.', true);
-				}
                 else if (!pcsOK || !totalOK) {
                     showMessage(2@((int)Model.Function), 'Please input PCS quantity and Counting Space for defect.', true);
                 }                

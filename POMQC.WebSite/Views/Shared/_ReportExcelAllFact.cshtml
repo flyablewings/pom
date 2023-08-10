@@ -35,7 +35,7 @@
             {
                 var dhus = item.GroupBy(i => i.DHUType);
         <tr class="b sup-header-row-bg">
-            <td colspan="4">@item.First().FactoryName.ToUpperInvariant()</td>
+            <td colspan="4">@item.First().FactoryName</td>
             <td class="b c">@item.Sum(i => i.Total)</td>
         </tr>        
                 foreach (var dhu in dhus)

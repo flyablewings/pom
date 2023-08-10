@@ -529,9 +529,9 @@
         <table id="tbl-final@((int)Model.Function)">
             <thead>
                 <tr class="b c">
-                    <td style="width: 60%">DEFECT DESCRIPTION</td>
-                    <td style="width: 20%">DEFECT LOCATION</td>
-                    <td style="width: 10%">MAJOR</td>
+                    <td style="width: 30%">DEFECT DESCRIPTION</td>
+                    <td style="width: 30%">DEFECT LOCATION</td>
+                    <td style="width: 20%">MAJOR</td>
                     <td>MINOR</td>
                 </tr>
             </thead>
@@ -713,7 +713,7 @@
                     var codes = getDefectCodes(@((int)Model.Function));
                     var locations = getDefectLocations(@((int)Model.Function));
 
-                    var tr = $('#main tr.selected-row');
+                    var tr = $('.selected-row');
 
                     if (tr && tr[0] && tr[0].cells) {
                         var custName = tr[0].cells[2].innerText;

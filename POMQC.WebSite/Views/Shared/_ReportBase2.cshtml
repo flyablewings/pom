@@ -37,7 +37,7 @@
             {
                 var dhus = item.GroupBy(i => i.DHUType);
         <tr class="b sup-header-row-bg">
-            <td colspan="4">@item.First().FactoryName.ToUpperInvariant()</td>
+            <td colspan="4">@item.First().FactoryName</td>
             <td class="b c">@item.Sum(i => i.Total)</td>
         </tr>        
                 foreach (var dhu in dhus)
@@ -45,7 +45,7 @@
                     var index = 1;
         <tr class="b sub-header-row-bg">
             <td></td>
-            <td colspan="3">@dhu.First().DHUType.ToString().ToUpperInvariant()</td>
+            <td colspan="3">@dhu.First().DHUType.ToString()</td>
             <td class="b c">@dhu.Sum(i => i.Total)</td>
         </tr> 
                     foreach (var defect in dhu)
